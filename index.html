@@ -7,7 +7,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body data-maintenance="true">
+    <div id="maintenanceScreen">
+        SITE UNDER CONSTRUCTION
+    </div>
+
+
 
     <div id="nav"></div>
 
@@ -43,9 +48,9 @@
 
     <!--
 
- -
+    -
 
-    -->
+       -->
     <!-- !pink!some pink text!    to make text pink lol -->
     <!-- sections -->
     <section class="section" data-name="Home" style="--bg:url('BG1.png')">
@@ -118,7 +123,7 @@
     <section class="section" data-name="About Me" style="--bg: url('BG1.png')">
         <div class="content">
             <h1 class="fade">About Me</h1>
-            <p class="fade c d">I'm !yyyymm:2007-06! years old man. I like to do many things like !red!play games!, !green!programme!, !aqua!draw!, !orange!make 3D models!, !lightgreen!go outside!, and many other things. </p>
+            <p class="fade c d">I'm !yyyymm:2007-06! years old man. I like to do many things like !red!playing games!, !green!programming!, !aqua!drawing!, !orange!making 3D models!, !lightgreen!going outside!, and many other things. </p>
         </div>
     </section>
 
@@ -137,6 +142,12 @@
             <p class="fade">Here are some of my most active social media sites.</p>
         </div>
     </section>
+
+
+
+
+
+
 
 
 
@@ -306,6 +317,18 @@
             }, 4000);
         });
 
+        /* MAITNANCE SCREEN */
+        window.addEventListener("load", () => {
+            const isMaintenance = document.body.dataset.maintenance === "true";
+
+            const screen = document.getElementById("maintenanceScreen");
+
+            if (isMaintenance) {
+                screen.style.display = "flex";
+                document.body.style.overflow = "hidden";
+            }
+        });
+
 
 
         /* TEXT COLORS */
@@ -421,7 +444,7 @@
         const links = [
             { name: "Links", url: "/links.html" },
             { name: "Projects", url: "/projects.html" },
-            { name: "Photos", url: "/photos.html" }
+            { name: "Socials", url: "/socials.html" }
         ];
 
         const orbit = document.getElementById("orbit");
@@ -463,9 +486,9 @@
                 const blur = (1 - (z + 1) / 2) * 2;
 
                 moon.style.transform = `
-                                            translate(${cx + x - 45}px, ${cy + y - 20}px)
-                                            scale(${scale})
-                                        `;
+                                                    translate(${cx + x - 45}px, ${cy + y - 20}px)
+                                                    scale(${scale})
+                                                `;
 
                 moon.style.opacity = opacity;
                 moon.style.filter = `blur(${blur}px)`;
