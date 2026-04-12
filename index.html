@@ -3,20 +3,497 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Niko Main</title>
+    <title>Niko</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <header>
-        <h1>Hello</h1>
-        <p>This is a small testing version for my upcoming site</p>
-    </header>
+    <div id="nav"></div>
 
-    <footer>
-        <p>Niko</p>
-    </footer>
+    <div id="cursorLight"></div>
+
+    <!-- top profile -->
+    <div class="profile-container">
+        <img src="Niko.png" class="profile-pic">
+    </div>
+
+    <!-- overlay -->
+    <div id="overlay"></div>
+
+    <!-- center profile system -->
+    <div id="centerProfile" class="hidden">
+
+        <img src="Niko.png" id="centerProfileImg">
+
+        <div id="orbit"></div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--
+
+ -
+
+    -->
+    <!-- !pink!some pink text!    to make text pink lol -->
+    <!-- sections -->
+    <section class="section" data-name="Home" style="--bg:url('BG1.png')">
+        <div class="content">
+            <h1 class="fade">Hi, I'm Niko</h1>
+            <p class="fade c">Welcome to my personal website. On this site you can learn things about me and find everything i've made. Here are some games i !pink!love! the most for example. !yellow!:D!</p>
+            <div class="projects-grid fade">
+
+                <a class="project-card fade"
+                   href="https://www.minecraft.net/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   data-prefix="BGMC"
+                   data-count="10">
+
+                    <div class="project-title fade c">!green!Minecraft!</div>
+                    <div class="project-desc fade c">
+                        The greatest game of all time, +6k hours spend on it and it was worth it.
+                        !lightyellow!the latest updates are kinda :(!
+                    </div>
+                </a>
+
+                <a class="project-card fade"
+                   href="https://store.steampowered.com/app/4000/Garrys_Mod/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   data-prefix="BGMOD"
+                   data-count="14">
+
+                    <div class="project-title fade c">!aqua!Gmod!</div>
+                    <div class="project-desc fade c">
+                        The limitless possibilities with mods are just crazy.
+                        !lightblue!the minigame Warden's Zombie Survival is the only thing i play!
+                    </div>
+                </a>
+
+                <a class="project-card fade"
+                   href="https://store.steampowered.com/app/294100/RimWorld/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   data-prefix="BGRW"
+                   data-count="6">
+
+                    <div class="project-title fade c">!bronze!Rimworld!</div>
+                    <div class="project-desc fade c">
+                        Crying when my colonist dies.
+                        !lightpink!many small mods that fix 1 feature different ways are fun!
+                    </div>
+                </a>
+
+                <a class="project-card fade"
+                   href="https://store.steampowered.com/app/3240220/Grand_Theft_Auto_V_Enhanced/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   data-prefix="BGGTA"
+                   data-count="8">
+
+                    <div class="project-title fade c">!yellow!GTA V!</div>
+                    <div class="project-desc fade c">
+                        600h just driving around the map with !green!TheLab!.
+                        !lightgreen!pls no Opressor MK2 in GTA VI!
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="section" data-name="About Me" style="--bg: url('BG1.png')">
+        <div class="content">
+            <h1 class="fade">About Me</h1>
+            <p class="fade c d">I'm !yyyymm:2007-06! years old man. I like to do many things like !red!play games!, !green!programme!, !aqua!draw!, !orange!make 3D models!, !lightgreen!go outside!, and many other things. </p>
+        </div>
+    </section>
+
+
+    <section class="section" data-name="Projects" style="--bg: url('BG1.png')">
+        <div class="content">
+            <h1 class="fade">Projects</h1>
+            <p class="fade">Here are some of my biggest projects i've made.</p>
+        </div>
+    </section>
+
+
+    <section class="section" data-name="Socials" style="--bg: url('BG1.png')">
+        <div class="content">
+            <h1 class="fade">Social Media</h1>
+            <p class="fade">Here are some of my most active social media sites.</p>
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+    <script>
+        /* FADE */
+        const elements = document.querySelectorAll(".fade");
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("show");
+                } else {
+                    entry.target.classList.remove("show");
+                }
+            });
+        }, {
+            threshold: 0.15
+        });
+
+        elements.forEach(el => observer.observe(el));
+
+
+        /* NAV */
+
+        const sections = document.querySelectorAll(".section");
+        const nav = document.getElementById("nav");
+
+        let currentSection = 0;
+        let isScrolling = false;
+
+        function buildNav() {
+            nav.innerHTML = "";
+
+            sections.forEach((sec, i) => {
+                const item = document.createElement("div");
+                item.className = "nav-item";
+                item.innerText = sec.dataset.name;
+
+                item.onclick = () => scrollToSection(i);
+
+                nav.appendChild(item);
+            });
+        }
+
+        buildNav();
+
+        /* SCROLL */
+        function scrollToSection(index) {
+            if (index < 0 || index >= sections.length) return;
+            if (isScrolling) return;
+
+            isScrolling = true;
+            currentSection = index;
+
+            window.scrollTo({
+                top: sections[index].offsetTop,
+                behavior: "smooth"
+            });
+
+            setActive(index);
+
+            setTimeout(() => {
+                isScrolling = false;
+            }, 300);
+        }
+
+        /* WHEEL */
+        window.addEventListener("wheel", (e) => {
+            e.preventDefault();
+
+            if (isScrolling) return;
+
+            if (e.deltaY > 0) {
+                scrollToSection(currentSection + 1);
+            } else {
+                scrollToSection(currentSection - 1);
+            }
+        }, { passive: false });
+
+        /* ACTIVE STATE */
+        function setActive(index) {
+            document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+            if (document.querySelectorAll(".nav-item")[index]) {
+                document.querySelectorAll(".nav-item")[index].classList.add("active");
+            }
+        }
+        window.addEventListener("load", () => {
+            updateActiveNav();
+        });
+        function updateActiveNav() {
+            const navItems = document.querySelectorAll(".nav-item");
+
+            sections.forEach((sec, i) => {
+                const rect = sec.getBoundingClientRect();
+
+                if (
+                    rect.top <= window.innerHeight / 2 &&
+                    rect.bottom >= window.innerHeight / 2
+                ) {
+                    navItems.forEach(n => n.classList.remove("active"));
+                    if (navItems[i]) navItems[i].classList.add("active");
+
+                    currentSection = i;
+                }
+            });
+        }
+
+
+        /* TEXT DATE TO CURRET */
+        function parseDates() {
+            document.querySelectorAll(".d").forEach(el => {
+
+                if (el.dataset.dateParsed === "true") return;
+
+                let html = el.innerHTML;
+
+                const regex = /!yyyymm:(\d{4})-(\d{2})!/g;
+
+                html = html.replace(regex, (match, year, month) => {
+
+                    const now = new Date();
+
+                    let age = now.getFullYear() - Number(year);
+
+                    if (now.getMonth() + 1 < Number(month)) {
+                        age--;
+                    }
+
+                    return age;
+                });
+
+                el.innerHTML = html;
+                el.dataset.dateParsed = "true";
+            });
+        }
+
+        window.addEventListener("load", parseDates);
+
+        /* MANY IMAGES */
+        document.querySelectorAll(".project-card").forEach(card => {
+
+            const prefix = card.dataset.prefix;
+            const count = Number(card.dataset.count);
+
+            let index = 1;
+
+            function setImage(i) {
+                const url = `${prefix}${i}.png`;
+                card.style.setProperty("--bg", `url('${url}')`);
+            }
+
+            setImage(1);
+
+            setInterval(() => {
+                index++;
+                if (index > count) index = 1;
+
+                setImage(index);
+
+            }, 4000);
+        });
+
+
+
+        /* TEXT COLORS */
+        function parseCustomColors() {
+
+            const elements = document.querySelectorAll(".c");
+
+            const colors = [
+                "lime",
+                "magenta",
+                "white",
+                "gray",
+                "black",
+
+                "red",
+                "green",
+                "blue",
+                "yellow",
+                "cyan",
+                "orange",
+                "purple",
+                "pink",
+                "brown",
+                "navy",
+                "teal",
+                "olive",
+                "maroon",
+
+                "aqua",
+                "violet",
+                "gold",
+
+                "darkred",
+                "darkblue",
+                "darkgreen",
+                "darkpurple",
+                "darkorange",
+                "darkcyan",
+
+                "neonpink",
+                "neongreen",
+                "neonblue",
+                "neonyellow",
+                "neonpurple",
+
+                "lightpink",
+                "lightblue",
+                "lightgreen",
+                "lightyellow",
+                "lavender",
+
+                "silver",
+                "bronze",
+                "indigo",
+                "crimson"
+            ];
+
+
+
+            elements.forEach(el => {
+
+                // prevent double parsing
+                if (el.dataset.parsed === "true") return;
+
+                let html = el.innerHTML;
+
+                colors.forEach(color => {
+                    const regex = new RegExp(`!${color}!(.*?)!`, "g");
+                    html = html.replace(regex, `<span class="${color}">$1</span>`);
+                });
+
+                el.innerHTML = html;
+                el.dataset.parsed = "true";
+            });
+        }
+
+        window.addEventListener("load", parseCustomColors);
+
+
+
+
+
+
+        /* OVERLAY */
+        const topProfile = document.querySelector(".profile-pic");
+        const overlay = document.getElementById("overlay");
+        const centerProfile = document.getElementById("centerProfile");
+
+        function openProfile() {
+            overlay.classList.add("show");
+            centerProfile.classList.add("show");
+        }
+
+        function closeProfile() {
+            overlay.classList.remove("show");
+            centerProfile.classList.remove("show");
+        }
+
+        topProfile.onclick = openProfile;
+        overlay.onclick = closeProfile;
+
+        /* ORBIT */
+        const links = [
+            { name: "Links", url: "/links.html" },
+            { name: "Projects", url: "/projects.html" },
+            { name: "Photos", url: "/photos.html" }
+        ];
+
+        const orbit = document.getElementById("orbit");
+
+        function buildOrbit() {
+            orbit.innerHTML = "";
+
+            links.forEach(link => {
+                const moon = document.createElement("div");
+                moon.className = "moon";
+                moon.innerText = link.name;
+                moon.onclick = () => window.location.href = link.url;
+                orbit.appendChild(moon);
+            });
+        }
+
+        buildOrbit();
+
+        let angleOffset = 0;
+
+        function animateOrbit() {
+            const moons = document.querySelectorAll(".moon");
+
+            const radius = 160;
+            const cx = 200;
+            const cy = 200;
+
+            moons.forEach((moon, i) => {
+
+                const angle = (i / moons.length) * Math.PI * 2 + angleOffset;
+
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle);
+
+                const y = z * 40;
+
+                const scale = 0.55 + (z + 1) * 0.25;
+                const opacity = 0.25 + (z + 1) * 0.35;
+                const blur = (1 - (z + 1) / 2) * 2;
+
+                moon.style.transform = `
+                                            translate(${cx + x - 45}px, ${cy + y - 20}px)
+                                            scale(${scale})
+                                        `;
+
+                moon.style.opacity = opacity;
+                moon.style.filter = `blur(${blur}px)`;
+
+                moon.style.zIndex = Math.floor((z + 1) * 100);
+            });
+
+            angleOffset += 0.01;
+
+            requestAnimationFrame(animateOrbit);
+        }
+
+        animateOrbit();
+
+        /* CURSOR */
+        const light = document.getElementById("cursorLight");
+
+        let mouseX = 0, mouseY = 0;
+        let lx = 0, ly = 0;
+
+        document.addEventListener("mousemove", e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateLight() {
+            lx += (mouseX - lx) * 0.35;
+            ly += (mouseY - ly) * 0.35;
+
+            light.style.left = lx + "px";
+            light.style.top = ly + "px";
+
+            requestAnimationFrame(animateLight);
+        }
+
+        animateLight();
+
+    </script>
 
 </body>
 </html>
