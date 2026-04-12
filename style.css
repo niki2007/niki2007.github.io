@@ -27,6 +27,19 @@ body {
     overflow-x: hidden;
 }
 
+#maintenanceScreen {
+    position: fixed;
+    inset: 0;
+    background: black;
+    color: white;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    z-index: 999999;
+}
+
+
 /* COLORED TEXT JS */
 .lime { color: #66ff66; }
 .magenta { color: #ff66ff; }
