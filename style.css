@@ -1,6 +1,4 @@
-/* =========================
-   GLOBAL
-========================= */
+/* MAIN */
 html {
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
@@ -103,11 +101,12 @@ body {
 
 
 /* GRID SECTIONS */
+/* Main part */
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-    width: min(900px, 90vw);
+    width: min(1300px, 130vw);
     justify-items: center;
     align-items: center;
     margin-left: auto;
@@ -135,7 +134,7 @@ body {
     text-decoration: none;
     color: inherit;
     width: 100%;
-    height: 180px;
+    height: min(280px, 40vh);
     border-radius: 15px;
     position: relative;
     overflow: hidden;
@@ -166,6 +165,146 @@ body {
     }
 
 
+/* Socials part */
+#socialOverlay {
+    position: fixed;
+    inset: 0;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.75);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.35s ease-in-out;
+}
+
+    #socialOverlay.show {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+    }
+        #socialOverlay.show #socialCard {
+            transform: perspective(900px) scale(1);
+            opacity: 1;
+        }
+
+
+#socialCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    gap: 1px;
+    padding: 30px;
+    border-radius: 50px;
+    border: solid;
+    border-color: rgb(255, 255, 255, 0.2);
+    width: min(600px, 90vw);
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transform: perspective(900px) scale(0.85);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(.2,.8,.2,1), opacity 0.25s ease;
+    background-image: var(--bg);
+    background-size: cover;
+    background-position: center;
+    pointer-events: auto;
+}
+    #socialCard::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: var(--bg);
+        background-size: cover;
+        background-position: center;
+        filter: blur(2px) saturate(0.6) brightness(0.4);
+        transform: scale(1.1);
+        z-index: -1;
+    }
+
+
+
+#bigAvatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+}
+.social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    width: min(900px, 90vw);
+    margin: 0 auto;
+    justify-items: center;
+}
+
+@media (max-width: 900px) {
+    .social-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+#bigLink {
+    font-size: 16px;
+    opacity: 0.6;
+    color: #aaa;
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+    #bigLink:hover {
+        opacity: 1;
+        text-decoration: underline;
+    }
+
+.social-tile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.25s;
+    backdrop-filter: blur(8px);
+    color: white;
+    width: 100%;
+    max-width: 200px;
+}
+
+    .social-tile img {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+    }
+
+    .social-tile span {
+        font-size: 14px;
+    }
+
+    .social-tile:hover {
+        transform: scale(1.05);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -182,7 +321,6 @@ body {
 }
 
 
-    /* dark cinematic overlay */
     .section::before {
         content: "";
         position: absolute;
@@ -196,9 +334,7 @@ body {
     }
 
 
-/* =========================
-   CONTENT
-========================= */
+/* CONTENT */
 .content {
     display: flex;
     flex-direction: column;
@@ -218,9 +354,7 @@ p {
     opacity: 0.8;
 }
 
-/* =========================
-   FADE IN ANIMATION
-========================= */
+/* FADE */
 .fade {
     opacity: 0;
     transform: translateY(30px);
@@ -233,9 +367,7 @@ p {
     }
 
 
-/* =========================
-   PROFILE ICON
-========================= */
+/* PROFILE ICON */
 .profile-container {
     position: fixed;
     top: 20px;
@@ -251,9 +383,7 @@ p {
     cursor: pointer;
 }
 
-/* =========================
-   CURSOR DARK SPOTLIGHT
-========================= */
+/* CURSOR SHADOW */
 #cursorLight {
     position: fixed;
     width: 120px;
@@ -262,7 +392,6 @@ p {
     pointer-events: none;
     transform: translate(-50%, -50%);
     z-index: 5;
-    /*  DARK CENTER SPOTLIGHT (correct version) */
     background: radial-gradient(circle, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.15) 30%, rgba(0,0,0,0.0) 70% );
     mix-blend-mode: multiply;
 }
@@ -282,26 +411,30 @@ p {
 /* each item */
 .nav-item {
     font-size: 16px;
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: pointer;
     transition: all 0.3s ease;
     padding: 6px 10px;
     border-right: 2px solid rgba(255,255,255,0.2);
     text-align: right;
-    align-self: right;
+    background: fixed;
+    background-color: rgb(0, 0, 0, 0.41);
 }
 
     /* hover effect */
     .nav-item:hover {
         opacity: 1;
-        transform: translateX(-5px);
+        transform: translateX(-4px);
         border-right: 2px solid white;
+        background-color: rgb(0, 0, 0, 1);
     }
 
     /* active section highlight */
     .nav-item.active {
         opacity: 1;
         border-right: 2px solid red;
+        transform: translateX(-7px);
+        background-color: rgb(0, 0, 0, 1);
     }
 
 
@@ -342,12 +475,17 @@ p {
     opacity: 0;
     transition: 0.3s;
     z-index: 60;
+    pointer-events: none;
 }
 
     #centerProfile.show {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
+        pointer-events: auto;
     }
+        #centerProfile.show #orbit {
+            pointer-events: auto;
+        }
 
 #centerProfileImg {
     width: 140px;
@@ -364,6 +502,7 @@ p {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 
 /* moons */
@@ -377,6 +516,18 @@ p {
     color: white;
     cursor: pointer;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
