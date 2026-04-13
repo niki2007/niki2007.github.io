@@ -14,6 +14,17 @@
 
 
 
+
+    <div id="socialOverlay">
+        <div id="socialCard">
+            <img id="bigAvatar">
+            <h1 id="bigName"></h1>
+            <a id="bigLink" target="_blank"></a>
+            <p id="bigDesc"></p>
+            <div id="bigGallery"></div>
+        </div>
+    </div>
+
     <div id="nav"></div>
 
     <div id="cursorLight"></div>
@@ -48,7 +59,20 @@
 
     <!--
 
-    -
+            <div class="social-grid fade">
+
+                <div class="social-tile"
+                     data-name="The Rekinded Gaming"
+                     data-avatar="CARDDC.png"
+                     data-glass="#a80000"
+                     data-bg="CARDDCbg.png"
+                     data-link="https://discord.gg/weQXsMrND2"
+                     data-desc="Similar to this site. I post everything there. Best place if you have any questions or just want to chat with me."
+                     data-images="">
+
+                    <img>
+                    <span>Discord</span>
+                </div>
 
        -->
     <!-- !pink!some pink text!    to make text pink lol -->
@@ -138,10 +162,50 @@
 
     <section class="section" data-name="Socials" style="--bg: url('BG1.png')">
         <div class="content">
+
             <h1 class="fade">Social Media</h1>
             <p class="fade">Here are some of my most active social media sites.</p>
+
+            <div class="social-grid fade">
+
+                <div class="social-tile"
+                     data-name="The Rekinded Gaming"
+                     data-avatar="CARDDC.png"
+                     data-glass="#a80000"
+                     data-bg="CARDDCbg.png"
+                     data-link="https://discord.gg/weQXsMrND2"
+                     data-desc="Similar to this site. I post everything there. Best place if you have any questions or just want to chat with me."
+                     data-images="">
+
+                    <img>
+                    <span>Discord</span>
+                </div>
+                <div class="social-tile"
+                     data-name="nikilogout_"
+                     data-avatar="CARDCFG.png"
+                     data-glass="#ff7300"
+                     data-bg="CARDCFGbg.png"
+                     data-link="https://www.curseforge.com/members/nikilogout_/projects"
+                     data-desc="You can find all of my projects for games that use CurseForge for modding. Mostly Minecraft and Hytale mods and modpacks."
+                     data-images="">
+
+                    <img>
+                    <span>Cureforge</span>
+                </div>
+
+
+
+
+
+
+
+
+            </div>
+
+
         </div>
     </section>
+
 
 
 
@@ -390,7 +454,6 @@
 
             elements.forEach(el => {
 
-                // prevent double parsing
                 if (el.dataset.parsed === "true") return;
 
                 let html = el.innerHTML;
@@ -419,7 +482,94 @@
         preloadImages("BGRW", 6);
         preloadImages("BGGTA", 8);
 
+        /* CARD OVERLAY */
+        const socialOverlay = document.getElementById("socialOverlay");
+        const socialCard = document.getElementById("socialCard");
 
+        const bigName = document.getElementById("bigName");
+        const bigLink = document.getElementById("bigLink");
+        const bigDesc = document.getElementById("bigDesc");
+        const bigAvatar = document.getElementById("bigAvatar");
+        const bigGallery = document.getElementById("bigGallery");
+
+        /* OPEN CARD */
+        document.querySelectorAll(".social-tile").forEach(tile => {
+
+            tile.style.background = tile.dataset.glass;
+
+            tile.addEventListener("click", () => {
+
+                bigName.innerText = tile.dataset.name;
+                bigDesc.innerText = tile.dataset.desc;
+                bigAvatar.src = tile.dataset.avatar;
+                bigLink.href = tile.dataset.link;
+                bigLink.innerText = tile.dataset.link;
+
+                socialCard.style.setProperty("--bg", `url('${tile.dataset.bg}')`);
+
+                bigGallery.innerHTML = "";
+
+                const imgs = tile.dataset.images.split(",").map(x => x.trim());
+
+
+                imgs.forEach(src => {
+                    const img = document.createElement("img");
+                    img.src = src;
+                    img.style.width = "250px";
+                    img.style.margin = "5px";
+                    bigGallery.appendChild(img);
+                });
+
+                socialOverlay.classList.add("show");
+            });
+        });
+
+        document.querySelectorAll(".social-tile").forEach(tile => {
+
+            const img = tile.querySelector("img");
+            img.src = tile.dataset.avatar;
+
+        });
+
+
+        /* CLOSE CARD (click outside) */
+        socialOverlay.addEventListener("click", () => {
+            socialOverlay.classList.remove("show");
+
+            socialCard.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
+        });
+
+
+        /* prevent closing when clicking card */
+        socialCard.addEventListener("click", (e) => {
+            e.stopPropagation();
+        });
+
+
+        /* 3D CURSOR TILT */
+        socialOverlay.addEventListener("mousemove", (e) => {
+
+            const rect = socialCard.getBoundingClientRect();
+
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateY = (x - centerX) / 20;
+            const rotateX = -(y - centerY) / 20;
+
+            socialCard.style.transform =
+                `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+
+        /* reset tilt when leaving screen */
+        socialOverlay.addEventListener("mouseleave", () => {
+            socialCard.style.transform =
+                "perspective(900px) rotateX(0deg) rotateY(0deg)";
+        });
 
 
         /* OVERLAY */
@@ -486,9 +636,9 @@
                 const blur = (1 - (z + 1) / 2) * 2;
 
                 moon.style.transform = `
-                                                    translate(${cx + x - 45}px, ${cy + y - 20}px)
-                                                    scale(${scale})
-                                                `;
+                                                                            translate(${cx + x - 45}px, ${cy + y - 20}px)
+                                                                            scale(${scale})
+                                                                        `;
 
                 moon.style.opacity = opacity;
                 moon.style.filter = `blur(${blur}px)`;
