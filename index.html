@@ -190,7 +190,7 @@
                      data-images="">
 
                     <img>
-                    <span>Cureforge</span>
+                    <span>Curseforge</span>
                 </div>
 
 
@@ -367,8 +367,15 @@
 
             function setImage(i) {
                 const url = `${prefix}${i}.png`;
-                card.style.setProperty("--bg", `url('${url}')`);
+
+                const img = new Image();
+                img.src = url;
+
+                img.onload = () => {
+                    card.style.setProperty("--bg", `url('${url}')`);
+                };
             }
+
 
             setImage(1);
 
@@ -471,16 +478,26 @@
         window.addEventListener("load", parseCustomColors);
 
         /* FIX GITHUB LOADING IMAGES */
-        function preloadImages(prefix, count) {
-            for (let i = 1; i <= count; i++) {
+        function progressivePreload(prefix, count, delay = 800) {
+            let i = 1;
+
+            function loadNext() {
+                if (i > count) return;
+
                 const img = new Image();
                 img.src = `${prefix}${i}.png`;
+
+                i++;
+                setTimeout(loadNext, delay);
             }
+
+            loadNext();
         }
-        preloadImages("BGMC", 10);
-        preloadImages("BGMOD", 14);
-        preloadImages("BGRW", 6);
-        preloadImages("BGGTA", 8);
+        progressivePreload("BGMC", 10);
+        progressivePreload("BGMOD", 14);
+        progressivePreload("BGRW", 6);
+        progressivePreload("BGGTA", 8);
+
 
         /* CARD OVERLAY */
         const socialOverlay = document.getElementById("socialOverlay");
