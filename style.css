@@ -106,7 +106,8 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-    width: min(1300px, 80vw);
+    width: 1300px;
+    height: 280px;
     justify-items: center;
     align-items: center;
     margin-left: auto;
@@ -117,6 +118,7 @@ body {
         grid-template-columns: 1fr;
         justify-items: center;
         align-items: center;
+        height: 180px;
     }
 }
 .project-desc {
@@ -134,7 +136,7 @@ body {
     text-decoration: none;
     color: inherit;
     width: 100%;
-    height: min(280px, 20vh);
+    height: 100%;
     border-radius: 15px;
     position: relative;
     overflow: hidden;
