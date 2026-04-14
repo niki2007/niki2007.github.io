@@ -58,21 +58,25 @@
 
 
     <!--
+        
+    
 
-            <div class="social-grid fade">
 
-                <div class="social-tile"
-                     data-name="The Rekinded Gaming"
-                     data-avatar="CARDDC.png"
-                     data-glass="#a80000"
-                     data-bg="CARDDCbg.png"
-                     data-link="https://discord.gg/weQXsMrND2"
-                     data-desc="Similar to this site. I post everything there. Best place if you have any questions or just want to chat with me."
+                <div class="social-tile fade"
+                     data-name="nikilogout"
+                     data-avatar="CARD.png"
+                     data-glass="#ffffff"
+                     data-bg="CARDbg.png"
+                     data-link=""
+                     data-desc="."
                      data-images="">
 
                     <img>
-                    <span>Discord</span>
+                    <span>Youtube</span>
                 </div>
+
+
+
 
        -->
     <!-- !pink!some pink text!    to make text pink lol -->
@@ -166,9 +170,9 @@
             <h1 class="fade">Social Media</h1>
             <p class="fade">Here are some of my most active social media sites.</p>
 
-            <div class="social-grid fade">
+            <div class="social-grid">
 
-                <div class="social-tile"
+                <div class="social-tile fade"
                      data-name="The Rekinded Gaming"
                      data-avatar="CARDDC.png"
                      data-glass="#a80000"
@@ -180,10 +184,10 @@
                     <img>
                     <span>Discord</span>
                 </div>
-                <div class="social-tile"
+                <div class="social-tile fade"
                      data-name="nikilogout_"
                      data-avatar="CARDCFG.png"
-                     data-glass="#ff7300"
+                     data-glass="#0400ff"
                      data-bg="CARDCFGbg.png"
                      data-link="https://www.curseforge.com/members/nikilogout_/projects"
                      data-desc="You can find all of my projects for games that use CurseForge for modding. Mostly Minecraft and Hytale mods and modpacks."
@@ -191,6 +195,78 @@
 
                     <img>
                     <span>Curseforge</span>
+                </div>
+                <div class="social-tile fade"
+                     data-name="nikilogout"
+                     data-avatar="CARDYT.png"
+                     data-glass="#b80000"
+                     data-bg="CARDYTbg.png"
+                     data-link="https://www.youtube.com/@nikilogoutGaming"
+                     data-desc="You can watch my gaming videos, trailers, stream VODS, and other stuff there. For stream VODS look into playlists."
+                     data-images="">
+
+                    <img>
+                    <span>Youtube</span>
+                </div>
+                <div class="social-tile fade"
+                     data-name="nikilogout"
+                     data-avatar="CARDTW.png"
+                     data-glass="#6300c7"
+                     data-bg="CARDTWbg.png"
+                     data-link="https://www.twitch.tv/nikilogout"
+                     data-desc="I stream sometimes. You will mostly find me streaming games."
+                     data-images="">
+
+                    <img>
+                    <span>Twitch</span>
+                </div>
+                <div class="social-tile fade"
+                     data-name="nikilogout </>"
+                     data-avatar="CARDIG.png"
+                     data-glass="#ff9500"
+                     data-bg="CARDIGbg.png"
+                     data-link="https://www.instagram.com/nikilogout"
+                     data-desc="You can find random stuff there. I post random things like my blender projects or some random pictures from games."
+                     data-images="">
+
+                    <img>
+                    <span>Instagram</span>
+                </div>
+                <div class="social-tile fade"
+                     data-name="Nikilogout72721"
+                     data-avatar="CARDTT.png"
+                     data-glass="#00b3ff"
+                     data-bg="CARDTTbg.png"
+                     data-link="https://x.com/Nikilogout72721"
+                     data-desc="I usually post random stuff there. On Instagram images with description and here no images but mostly messages and responses."
+                     data-images="">
+
+                    <img>
+                    <span>Twitter</span>
+                </div>
+                <div class="social-tile fade"
+                     data-name="nikilogout"
+                     data-avatar="CARDPT.png"
+                     data-glass="#000000"
+                     data-bg="CARDPTbg.png"
+                     data-link="https://www.patreon.com/c/nikilogout"
+                     data-desc="Nothing yet."
+                     data-images="">
+
+                    <img>
+                    <span>Patreon</span>
+                </div>
+                <div class="social-tile fade"
+                     data-name="nikilogout"
+                     data-avatar="CARDGH.png"
+                     data-glass="#2d0070"
+                     data-bg="CARDGHbg.png"
+                     data-link="https://github.com/niki2007"
+                     data-desc="The base for my projects and for this site."
+                     data-images="">
+
+                    <img>
+                    <span>Github</span>
                 </div>
 
 
@@ -239,6 +315,23 @@
         });
 
         elements.forEach(el => observer.observe(el));
+
+        /* FADE for sections */
+        document.querySelectorAll(".section").forEach(section => {
+            const fades = section.querySelectorAll(".fade");
+
+            fades.forEach((el, i) => {
+                el.style.setProperty("--i", i);
+            });
+        });
+        document.querySelectorAll(".social-grid").forEach(grid => {
+            const tiles = grid.querySelectorAll(".fade");
+
+            tiles.forEach((el, i) => {
+                el.style.setProperty("--i", i);
+            });
+        });
+
 
 
         /* NAV */
@@ -460,15 +553,17 @@
 
 
             elements.forEach(el => {
+
                 if (el.dataset.parsed === "true") return;
 
-                let text = el.innerHTML;
+                let html = el.innerHTML;
 
-                text = text.replace(/!(\w+)!(.*?)!/g, (match, color, content) => {
-                    return `<span class="${color}">${content}</span>`;
+                colors.forEach(color => {
+                    const regex = new RegExp(`!${color}!(.*?)!`, "g");
+                    html = html.replace(regex, `<span class="${color}">$1</span>`);
                 });
 
-                el.innerHTML = text;
+                el.innerHTML = html;
                 el.dataset.parsed = "true";
             });
         }
@@ -652,9 +747,9 @@
                 const blur = (1 - (z + 1) / 2) * 2;
 
                 moon.style.transform = `
-                                                                            translate(${cx + x - 45}px, ${cy + y - 20}px)
-                                                                            scale(${scale})
-                                                                        `;
+                                                                                        translate(${cx + x - 45}px, ${cy + y - 20}px)
+                                                                                        scale(${scale})
+                                                                                    `;
 
                 moon.style.opacity = opacity;
                 moon.style.filter = `blur(${blur}px)`;
