@@ -460,17 +460,15 @@
 
 
             elements.forEach(el => {
-
                 if (el.dataset.parsed === "true") return;
 
-                let html = el.innerHTML;
+                let text = el.innerHTML;
 
-                colors.forEach(color => {
-                    const regex = new RegExp(`!${color}!(.*?)!`, "g");
-                    html = html.replace(regex, `<span class="${color}">$1</span>`);
+                text = text.replace(/!(\w+)!(.*?)!/g, (match, color, content) => {
+                    return `<span class="${color}">${content}</span>`;
                 });
 
-                el.innerHTML = html;
+                el.innerHTML = text;
                 el.dataset.parsed = "true";
             });
         }
