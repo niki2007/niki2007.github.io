@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Niko - Project Graph</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1a0b1f 0%, #0a050f 100%);
+            font-family: sans-serif;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="graph"></canvas>
+
+    <script>
+        const canvas = document.getElementById('graph');
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // ======================
+        // CONFIG
+        // ======================
+        const rawNodes = [
+            "name:ALL,color:#ffffff,size:25,linked:GAMES-SOFTWARE-REAL LIFE",
+            "name:REAL LIFE,color:#e3a9fe,size:17",
+            "name:SOFTWARE,color:#a9f0fe,size:15",
+            "name:GAMES,color:#6bffc6,size:15",
+            "name:Minecraft,color:#188f00,size:10,linked:GAMES",
+            "name:Unity,color:#7a7a7a,size:10,linked:SOFTWARE",
+            "name:Blender,color:#ff7b00,size:10,linked:SOFTWARE",
+            "name:Hytale,color:#c8ff00,size:10,linked:GAMES",
+            "name:Gmod,color:#00bfff,size:10,linked:GAMES",
+            "name:Rimworld,color:#5e5e5e,size:10,linked:GAMES",
+            "name:BDCC,color:#0033ff,size:10,linked:GAMES",
+            "name:CurseForge,color:#cc4700,size:7,linked:Minecraft,site:https://www.curseforge.com/members/nikilogout_/projects",
+            "name:MinecraftZ Zombie Nebula,color:#ff0000,size:4,linked:CurseForge,site:https://www.curseforge.com/minecraft/modpacks/mcz-official",
+            "name:MinecraftW Waifu H,color:#fb00ff,size:4,linked:CurseForge,site:https://www.curseforge.com/minecraft/modpacks/waifu-h",
+            "name:nikilogouts MCZ Addions,color:#006b02,size:4,linked:CurseForge-MinecraftZ Zombie Nebula,site:https://www.curseforge.com/minecraft/mc-mods/nikilogouts-mcz-addions",
+            "name:Minecraft like Jump Height,color:#b0b300,size:4,linked:Hytale,site:https://www.curseforge.com/hytale/mods/minecraft-like-jump-height",
+            "name:Barotrauma Radio,color:#2990ff,size:4,linked:Gmod",
+            "name:Lucky Towers Mobile,color:#9429ff,size:4,linked:Unity"
+        ];
+
+        // ======================
+        // PARSER
+        // ======================
+        function parseNode(str) {
+            let obj = {};
+
+            str.split(',').forEach(part => {
+                let index = part.indexOf(':');
+                if (index === -1) return;
+                let key = part.slice(0, index).trim();
+                let val = part.slice(index + 1).trim();
+                obj[key] = val;
+            });
+
+            return {
+                id: obj.name,
+                color: obj.color || '#7aa2ff',
+                site: obj.site || null,
+                links: obj.linked ? obj.linked.split('-') : [],
+
+                x: canvas.width / 2 + (Math.random() - 0.5) * 600,
+                y: canvas.height / 2 + (Math.random() - 0.5) * 600,
+                vx: (Math.random() - 0.5) * 0.2,
+                vy: (Math.random() - 0.5) * 0.2,
+
+                size: obj.size ? Number(obj.size) : 8
+            };
+        }
+
+        const nodes = rawNodes.map(parseNode);
+
+        const links = [];
+        nodes.forEach(n => {
+            n.links.forEach(target => {
+                links.push([n.id, target]);
+            });
+        });
+
+        function getNode(id) {
+            return nodes.find(n => n.id === id);
+        }
+
+        // ======================
+        // PHYSICS
+        // ======================
+        const springLength = 100;
+        const springStrength = 0.02;
+        const repulsion = 200;
+        const damping = 0.7;
+
+        function update() {
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    let a = nodes[i];
+                    let b = nodes[j];
+
+                    let dx = b.x - a.x;
+                    let dy = b.y - a.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+                    let force = repulsion / (dist * dist);
+                    let fx = force * dx / dist;
+                    let fy = force * dy / dist;
+
+                    a.vx -= fx;
+                    a.vy -= fy;
+                    b.vx += fx;
+                    b.vy += fy;
+                }
+            }
+
+            links.forEach(([aId, bId]) => {
+                let a = getNode(aId);
+                let b = getNode(bId);
+                if (!a || !b) return;
+
+                let dx = b.x - a.x;
+                let dy = b.y - a.y;
+                let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+                let avgSize = (a.size + b.size);
+                let springLength = avgSize * 5;
+
+                let force = (dist - springLength) * springStrength;
+                let fx = force * dx / dist;
+                let fy = force * dy / dist;
+
+                a.vx += fx;
+                a.vy += fy;
+                b.vx -= fx;
+                b.vy -= fy;
+            });
+
+            nodes.forEach(n => {
+                if (n === dragged) return;
+
+                n.vx *= damping;
+                n.vy *= damping;
+                n.x += n.vx;
+                n.y += n.vy;
+            });
+        }
+
+        // ======================
+        // BACKGROUND
+        // ======================
+        const stars = Array.from({ length: 140 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 1.5,
+            speed: Math.random() * 0.3 + 0.1
+        }));
+
+        function drawStars() {
+            stars.forEach(s => {
+                ctx.fillStyle = Math.random() > 0.5 ? '#ff9cfb' : '#ffd6f9';
+                ctx.globalAlpha = 0.5;
+                ctx.fillRect(s.x, s.y, s.size, s.size);
+
+                s.y += s.speed;
+                if (s.y > canvas.height) {
+                    s.y = 0;
+                    s.x = Math.random() * canvas.width;
+                }
+            });
+            ctx.globalAlpha = 1;
+        }
+
+        // ======================
+        // INTERACTION
+        // ======================
+        let dragged = null;
+        let hovered = null;
+        let mouseDownNode = null;
+        let isDragging = false;
+
+        canvas.addEventListener('mousedown', e => {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+
+            dragged = null;
+            mouseDownNode = null;
+            isDragging = false;
+
+            for (let n of nodes) {
+                let dx = mx - n.x;
+                let dy = my - n.y;
+                if (Math.sqrt(dx * dx + dy * dy) < n.size + 5) {
+                    dragged = n;
+                    mouseDownNode = n;
+                    break;
+                }
+            }
+        });
+
+        canvas.addEventListener('mousemove', e => {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+
+            hovered = null;
+
+            for (let n of nodes) {
+                let dx = mx - n.x;
+                let dy = my - n.y;
+                if (Math.sqrt(dx * dx + dy * dy) < n.size + 5) {
+                    hovered = n;
+                    break;
+                }
+            }
+
+            if (dragged) {
+                isDragging = true;
+                dragged.x = mx;
+                dragged.y = my;
+                dragged.vx = 0;
+                dragged.vy = 0;
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            if (!isDragging && mouseDownNode && mouseDownNode.site) {
+                window.open(mouseDownNode.site, '_blank');
+            }
+
+            dragged = null;
+            mouseDownNode = null;
+        });
+
+        // ======================
+        // DRAW
+        // ======================
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawStars();
+
+            ctx.strokeStyle = '#666';
+            links.forEach(([aId, bId]) => {
+                let a = getNode(aId);
+                let b = getNode(bId);
+                if (!a || !b) return;
+
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+            });
+
+            nodes.forEach(n => {
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, n.size, 0, Math.PI * 2);
+                ctx.fillStyle = n.color;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = n.color;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                ctx.fillStyle = '#fff';
+                ctx.font = '12px sans-serif';
+                ctx.fillText(n.id, n.x + n.size + 6, n.y + 4);
+
+            });
+
+            if (hovered && hovered.site) {
+                ctx.fillStyle = '#fff';
+                ctx.fillText(hovered.site, hovered.x + 15, hovered.y - 10);
+            }
+        }
+
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+
+        loop();
+    </script>
+</body>
+</html>
