@@ -189,7 +189,8 @@ body {
     opacity: 0;
     pointer-events: none;
     visibility: hidden;
-    transition: opacity 0.35s ease-in-out;
+    transition: opacity 0.45s ease-in-out;
+
 }
 
     #socialOverlay.show {
@@ -199,6 +200,7 @@ body {
     }
         #socialOverlay.show #socialCard {
             transform: perspective(900px) scale(1);
+            filter: blur(0px);
             opacity: 1;
         }
 
@@ -213,14 +215,15 @@ body {
     padding: 30px;
     border-radius: 50px;
     border: solid;
-    border-color: rgb(0, 0, 0, 0.5);
-    width: min(600px, 90vw);
+    border-color: rgba(100, 100, 100, 0.75);
+    width: min(550px, 90vw);
     position: relative;
     overflow: hidden;
     transform-style: preserve-3d;
     transform: perspective(900px) scale(0.85);
+    filter: blur(10px);
     opacity: 0;
-    transition: transform 0.3s cubic-bezier(.2,.8,.2,1), opacity 0.25s ease;
+    transition: transform 0.3s cubic-bezier(.2,.8,.2,1), opacity 0.45s ease, filter 0.7s ease-in-out;
     background-image: var(--bg);
     background-size: cover;
     background-position: center;
@@ -233,11 +236,10 @@ body {
         background-image: var(--bg);
         background-size: cover;
         background-position: center;
-        filter: blur(2px) saturate(0.6) brightness(0.4);
+        filter: blur(3px) saturate(0.6) brightness(0.32);
         transform: scale(1.1);
         z-index: -1;
     }
-
 
 
 #bigAvatar {
@@ -284,7 +286,7 @@ img {
     padding: 10px;
     border-radius: 12px;
     cursor: pointer;
-    transition: 0.25s;
+    transition: all 0.85s;
     backdrop-filter: blur(8px);
     color: white;
     width: 100%;
@@ -302,7 +304,8 @@ img {
     }
 
     .social-tile:hover {
-        transform: scale(1.05);
+        color: pink;
+        border-radius: 14px;
     }
 
 
@@ -371,17 +374,21 @@ p {
     opacity: 0.8;
 }
 
-/* FADE */
 .fade {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 1.2s ease-in-out;
+    transform: translateY(40px) scale(0.76);
+    filter: blur(5px) saturate(0);
+    transition: opacity 0.7s ease-in-out, transform 1.2s ease-in-out, filter 1.5s ease-in-out;
+    will-change: opacity, transform, filter;
+    transition-delay: calc(var(--i, 0) * 100ms);
 }
 
     .fade.show {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
+        filter: blur(0) saturate(1);
     }
+
 
 
 /* PROFILE ICON */
