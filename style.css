@@ -106,19 +106,18 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-    width: min(1300px, 90vw);
+    width: min(900px, 90vw);
     justify-items: center;
-    align-items: center;
     margin-left: auto;
     margin-right: auto;
 }
 
-/* cards */
 .project-card {
     text-decoration: none;
     color: inherit;
     width: 100%;
-    height: 280px; 
+    max-width: 400px;
+    aspect-ratio: 16 / 9;
 
     border-radius: 15px;
     position: relative;
@@ -133,19 +132,17 @@ body {
     will-change: transform;
 }
 
-/* mobile */
 @media (max-width: 500px) {
     .projects-grid {
         grid-template-columns: 1fr;
-        width: 90vw; 
     }
 
     .project-card {
-        height: 200px;
+        max-width: 90vw;
+        aspect-ratio: 16 / 9;
     }
 }
 
-/* text (outside media) */
 .project-desc {
     font-size: 13px;
     position: relative;
@@ -158,6 +155,7 @@ body {
     position: relative;
     z-index: 2;
 }
+
 
     .project-card::before {
         content: "";
