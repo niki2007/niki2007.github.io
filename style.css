@@ -244,7 +244,12 @@ body {
     width: 80px;
     height: 80px;
     border-radius: 15px;
+    image-rendering: auto;
 }
+img {
+    image-rendering: auto;
+}
+
 .social-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
