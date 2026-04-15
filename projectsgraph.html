@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <title>Niko - Project Graph</title>
     <style>
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('MinecraftFont.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
         body {
             margin: 0;
             overflow: hidden;
             background: radial-gradient(circle at center, #1a0b1f 0%, #0a050f 100%);
-            font-family: sans-serif;
+            font-family: 'Minecraft', sans-serif;
         }
 
         canvas {
@@ -274,7 +280,7 @@
                 ctx.shadowBlur = 0;
 
                 ctx.fillStyle = '#fff';
-                ctx.font = '12px sans-serif';
+                ctx.font = '12px Minecraft';
                 ctx.fillText(n.id, n.x + n.size + 6, n.y + 4);
 
             });
