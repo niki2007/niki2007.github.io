@@ -39,53 +39,41 @@ body {
 
 
 /* COLORED TEXT JS */
-.lime { color: #66ff66; }
-.magenta { color: #ff66ff; }
-.white { color: #ffffff; }
-.gray { color: #aaaaaa; }
-.black { color: #333333; }
-
 .red { color: #ff4d4d; }
-.green { color: #33cc33; }
-.blue { color: #4da6ff; }
-.yellow { color: #ffd633; }
-.cyan { color: #33ffff; }
-.orange { color: #ff9933; }
-.purple { color: #9933ff; }
+.lightred { color: #ff9999; }
+
+.redpink { color: #ff4d88; }
+.lightredpink { color: #ff99bb; }
+
 .pink { color: #ff66b3; }
-.brown { color: #b3774d; }
-.navy { color: #4d66cc; }
-.teal { color: #33cccc; }
-.olive { color: #999933; }
-.maroon { color: #cc4d4d; }
-
-.aqua { color: #33ffff; }
-.violet { color: #9933ff; }
-.gold { color: #ffcc33; }
-
-.darkred { color: #b30000; }
-.darkblue { color: #0000b3; }
-.darkgreen { color: #00994d; }
-.darkpurple { color: #660099; }
-.darkorange { color: #b35900; }
-.darkcyan { color: #009999; }
-
-.neonpink { color: #ff33cc; }
-.neongreen { color: #66ff33; }
-.neonblue { color: #3366ff; }
-.neonyellow { color: #ffff33; }
-.neonpurple { color: #b84dff; }
-
 .lightpink { color: #ff99cc; }
-.lightblue { color: #99ccff; }
-.lightgreen { color: #99ff99; }
-.lightyellow { color: #ffff99; }
-.lavender { color: #cc99ff; }
 
-.silver { color: #cccccc; }
-.bronze { color: #cc884d; }
-.indigo { color: #4d33cc; }
-.crimson { color: #e60033; }
+.purple { color: #9933ff; }
+.lightpurple { color: #cc99ff; }
+
+.blue { color: #4da6ff; }
+.lightblue { color: #99ccff; }
+
+.cyan { color: #33ffff; }
+.lightcyan { color: #99ffff; }
+
+.aqua { color: #33cccc; }
+.lightaqua { color: #99eeee; }
+
+.green { color: #33cc33; }
+.lightgreen { color: #99ff99; }
+
+.yellow { color: #ffd633; }
+.lightyellow { color: #ffff99; }
+
+.orange { color: #ff9933; }
+.lightorange { color: #ffcc80; }
+
+.brown { color: #b3774d; }
+.white { color: #ffffff; }
+.black { color: #333333; }
+.gray { color: #aaaaaa; }
+
 
 
 
@@ -177,11 +165,217 @@ body {
     }
 
 
+
+
+
+
+
+
+
+
+/* About Me part */
+
+#skillsContent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    column-gap: 10px;
+    row-gap: 10px;
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.skill {
+    position: relative;
+    width: 100%;
+    max-width: 220px;
+    padding: 15px;
+    border-radius: 14px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: white;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    transition: transform 0.25s ease, background 0.25s ease, border 0.25s ease;
+
+}
+
+    .skill:hover {
+        transform: translateY(-4px) scale(1.02);
+        background: rgba(255, 255, 255, 0.09);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+/* name + level row */
+.skill-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+
+.skill-name {
+    font-weight: 500;
+    opacity: 0.95;
+}
+
+.skill-meta {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+/* XP BAR */
+.bar {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition-delay: 0.3s;
+}
+
+
+#skillOverlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.75);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+
+    transition: opacity 0.45s ease-in-out;
+}
+
+    #skillOverlay.show {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible; 
+    }
+
+        #skillOverlay.show #skillCard {
+            transform: perspective(900px) scale(1);
+            filter: blur(0px);
+            opacity: 1;
+        }
+
+
+#skillCard {
+    width: min(520px, 92vw);
+    padding: 30px;
+    border-radius: 50px;
+    border: solid;
+    border-color: rgba(100, 100, 100, 0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    transform-style: preserve-3d;
+    transform: perspective(900px) scale(0.85);
+    filter: blur(10px);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(.2,.8,.2,1), opacity 0.45s ease, filter 0.7s ease-in-out;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(14px);
+}
+
+
+
+#skillCard h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+#skillXP {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+#skillCard .bar {
+    height: 10px;
+    width: 100%;
+    margin: 8px 0;
+}
+
+#skillDesc {
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+@media (max-width: 600px) {
+    #skillsContent {
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 8px;
+        row-gap: 3px;
+    }
+    .skill-top, .skill-meta {
+        font-size: 8px;
+    }
+    .skill {
+        max-width: 180px;
+
+    }
+}
+@media (max-width: 500px) {
+    #skillsContent {
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 3px;
+        row-gap: 3px;
+    }
+    .skill-top, .skill-meta {
+        font-size: 7px;
+    }
+    .skill {
+        max-width: 150px;
+    }
+}
+@media (max-width: 430px) {
+    .skill-top, .skill-meta {
+        font-size: 6px;
+    }
+
+    .skill {
+        max-width: 120px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Socials part */
 #socialOverlay {
     position: fixed;
     inset: 0;
-    display: flex; 
+    display: flex;
     justify-content: center;
     align-items: center;
     background: rgba(0,0,0,0.75);
@@ -190,7 +384,6 @@ body {
     pointer-events: none;
     visibility: hidden;
     transition: opacity 0.45s ease-in-out;
-
 }
 
     #socialOverlay.show {
@@ -198,6 +391,7 @@ body {
         pointer-events: auto;
         visibility: visible;
     }
+
         #socialOverlay.show #socialCard {
             transform: perspective(900px) scale(1);
             filter: blur(0px);
@@ -229,6 +423,7 @@ body {
     background-position: center;
     pointer-events: auto;
 }
+
     #socialCard::before {
         content: "";
         position: absolute;
@@ -248,6 +443,7 @@ body {
     border-radius: 15px;
     image-rendering: auto;
 }
+
 img {
     image-rendering: auto;
 }
@@ -259,6 +455,7 @@ img {
     width: min(900px, 90vw);
     margin: 0 auto;
     justify-items: center;
+    opacity: 0.85;
 }
 
 @media (max-width: 900px) {
@@ -507,6 +704,7 @@ p {
         transform: translate(-50%, -50%) scale(1);
         pointer-events: auto;
     }
+
         #centerProfile.show #orbit {
             pointer-events: auto;
         }
