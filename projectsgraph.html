@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Niko - Project Graph</title>
+
     <style>
         @font-face {
             font-family: 'Minecraft';
@@ -10,6 +11,7 @@
             font-weight: normal;
             font-style: normal;
         }
+
         body {
             margin: 0;
             overflow: hidden;
@@ -20,9 +22,24 @@
         canvas {
             display: block;
         }
+
+        #toggleBtn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 10;
+            padding: 10px 14px;
+            background: #111;
+            color: #fff;
+            border: 1px solid #444;
+            cursor: pointer;
+        }
     </style>
 </head>
+
 <body>
+
+    <button id="toggleBtn">Hide Upcoming</button>
     <canvas id="graph"></canvas>
 
     <script>
@@ -36,9 +53,12 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // ======================
-        // CONFIG
-        // ======================
+
+
+
+
+
+        // ====================================================================================================================================
         const rawNodes = [
             "name:ALL,color:#ffffff,size:25,linked:GAMES-SOFTWARE-REAL LIFE",
             "name:REAL LIFE,color:#e3a9fe,size:17",
@@ -59,6 +79,15 @@
             "name:Barotrauma Radio,color:#2990ff,size:4,linked:Gmod",
             "name:Lucky Towers Mobile,color:#9429ff,size:4,linked:Unity"
         ];
+        const wipRawNodes = [
+
+        ];
+        // ====================================================================================================================================
+
+
+
+
+
 
         // ======================
         // PARSER
@@ -69,9 +98,7 @@
             str.split(',').forEach(part => {
                 let index = part.indexOf(':');
                 if (index === -1) return;
-                let key = part.slice(0, index).trim();
-                let val = part.slice(index + 1).trim();
-                obj[key] = val;
+                obj[part.slice(0, index).trim()] = part.slice(index + 1).trim();
             });
 
             return {
@@ -79,38 +106,74 @@
                 color: obj.color || '#7aa2ff',
                 site: obj.site || null,
                 links: obj.linked ? obj.linked.split('-') : [],
+                size: obj.size ? Number(obj.size) : 8,
 
                 x: canvas.width / 2 + (Math.random() - 0.5) * 600,
                 y: canvas.height / 2 + (Math.random() - 0.5) * 600,
                 vx: (Math.random() - 0.5) * 0.2,
-                vy: (Math.random() - 0.5) * 0.2,
-
-                size: obj.size ? Number(obj.size) : 8
+                vy: (Math.random() - 0.5) * 0.2
             };
         }
 
-        const nodes = rawNodes.map(parseNode);
+        // ======================
+        // TWO SEPARATE LISTS
+        // ======================
+        const doneNodes = rawNodes.map(parseNode);
+        const wipNodes = wipRawNodes.map(parseNode);
 
+        // ======================
+        // TOGGLE STATE
+        // ======================
+        let showUpcoming = true;
+
+        document.getElementById('toggleBtn').onclick = () => {
+            showUpcoming = !showUpcoming;
+            document.getElementById('toggleBtn').textContent =
+                showUpcoming ? "Hide Upcoming" : "Show Upcoming";
+        };
+
+        // ======================
+        // ACTIVE STATE HELPERS
+        // ======================
+        function getActiveNodes() {
+            return showUpcoming ? [...doneNodes, ...wipNodes] : doneNodes;
+        }
+
+        function getActiveLinks() {
+            if (!showUpcoming) {
+                return links.filter(([a, b]) =>
+                    doneNodes.some(n => n.id === a) &&
+                    doneNodes.some(n => n.id === b)
+                );
+            }
+            return links;
+        }
+
+        // ======================
+        // LINKS
+        // ======================
         const links = [];
-        nodes.forEach(n => {
+
+        [...doneNodes, ...wipNodes].forEach(n => {
             n.links.forEach(target => {
                 links.push([n.id, target]);
             });
         });
 
         function getNode(id) {
-            return nodes.find(n => n.id === id);
+            return getActiveNodes().find(n => n.id === id);
         }
 
         // ======================
         // PHYSICS
         // ======================
-        const springLength = 100;
         const springStrength = 0.02;
         const repulsion = 200;
         const damping = 0.7;
 
         function update() {
+            const nodes = getActiveNodes();
+
             for (let i = 0; i < nodes.length; i++) {
                 for (let j = i + 1; j < nodes.length; j++) {
                     let a = nodes[i];
@@ -132,18 +195,18 @@
             }
 
             links.forEach(([aId, bId]) => {
-                let a = getNode(aId);
-                let b = getNode(bId);
+                let nodes = getActiveNodes();
+                let a = nodes.find(n => n.id === aId);
+                let b = nodes.find(n => n.id === bId);
                 if (!a || !b) return;
 
                 let dx = b.x - a.x;
                 let dy = b.y - a.y;
                 let dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
-                let avgSize = (a.size + b.size);
-                let springLength = avgSize * 5;
-
+                let springLength = (a.size + b.size) * 5;
                 let force = (dist - springLength) * springStrength;
+
                 let fx = force * dx / dist;
                 let fy = force * dy / dist;
 
@@ -164,7 +227,7 @@
         }
 
         // ======================
-        // BACKGROUND
+        // STARS
         // ======================
         const stars = Array.from({ length: 140 }, () => ({
             x: Math.random() * canvas.width,
@@ -192,9 +255,9 @@
         // INTERACTION
         // ======================
         let dragged = null;
-        let hovered = null;
         let mouseDownNode = null;
         let isDragging = false;
+        let hovered = null;
 
         canvas.addEventListener('mousedown', e => {
             const rect = canvas.getBoundingClientRect();
@@ -205,7 +268,7 @@
             mouseDownNode = null;
             isDragging = false;
 
-            for (let n of nodes) {
+            for (let n of getActiveNodes()) {
                 let dx = mx - n.x;
                 let dy = my - n.y;
                 if (Math.sqrt(dx * dx + dy * dy) < n.size + 5) {
@@ -223,7 +286,7 @@
 
             hovered = null;
 
-            for (let n of nodes) {
+            for (let n of getActiveNodes()) {
                 let dx = mx - n.x;
                 let dy = my - n.y;
                 if (Math.sqrt(dx * dx + dy * dy) < n.size + 5) {
@@ -251,17 +314,81 @@
         });
 
         // ======================
+        // MOBILE TOUCH SUPPORT
+        // ======================
+        canvas.addEventListener('touchstart', e => {
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+
+            const mx = touch.clientX - rect.left;
+            const my = touch.clientY - rect.top;
+
+            dragged = null;
+            mouseDownNode = null;
+            isDragging = false;
+
+            for (let n of getActiveNodes()) {
+                let dx = mx - n.x;
+                let dy = my - n.y;
+                if (Math.sqrt(dx * dx + dy * dy) < n.size + 10) { 
+                    dragged = n;
+                    mouseDownNode = n;
+                    break;
+                }
+            }
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', e => {
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+
+            const mx = touch.clientX - rect.left;
+            const my = touch.clientY - rect.top;
+
+            hovered = null;
+
+            for (let n of getActiveNodes()) {
+                let dx = mx - n.x;
+                let dy = my - n.y;
+                if (Math.sqrt(dx * dx + dy * dy) < n.size + 10) {
+                    hovered = n;
+                    break;
+                }
+            }
+
+            if (dragged) {
+                isDragging = true;
+                dragged.x = mx;
+                dragged.y = my;
+                dragged.vx = 0;
+                dragged.vy = 0;
+            }
+
+            e.preventDefault(); 
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', () => {
+            if (!isDragging && mouseDownNode && mouseDownNode.site) {
+                window.open(mouseDownNode.site, '_blank');
+            }
+
+            dragged = null;
+            mouseDownNode = null;
+        });
+
+        // ======================
         // DRAW
         // ======================
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             drawStars();
+
+            const nodes = getActiveNodes();
 
             ctx.strokeStyle = '#666';
             links.forEach(([aId, bId]) => {
-                let a = getNode(aId);
-                let b = getNode(bId);
+                let a = nodes.find(n => n.id === aId);
+                let b = nodes.find(n => n.id === bId);
                 if (!a || !b) return;
 
                 ctx.beginPath();
@@ -282,7 +409,6 @@
                 ctx.fillStyle = '#fff';
                 ctx.font = '12px Minecraft';
                 ctx.fillText(n.id, n.x + n.size + 6, n.y + 4);
-
             });
 
             if (hovered && hovered.site) {
@@ -291,6 +417,9 @@
             }
         }
 
+        // ======================
+        // LOOP
+        // ======================
         function loop() {
             update();
             draw();
@@ -299,5 +428,6 @@
 
         loop();
     </script>
+
 </body>
 </html>
