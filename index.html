@@ -58,8 +58,8 @@
 
 
     <!--
-        
-    
+
+
 
 
                 <div class="social-tile fade"
@@ -138,7 +138,7 @@
 
                     <div class="project-title fade c">!yellow!GTA V!</div>
                     <div class="project-desc fade c">
-                        600h just driving around the map with !green!TheLab!.
+                        600h just driving around the map with !green!TheLab! on.
                         !lightgreen!pls no Opressor MK2 in GTA VI!
                     </div>
                 </a>
@@ -154,6 +154,36 @@
             <p class="fade c d">I'm !yyyymm:2007-06! years old man. I like to do many things like !red!playing games!, !green!programming!, !aqua!drawing!, !orange!making 3D models!, !lightgreen!going outside!, and many other things. </p>
         </div>
     </section>
+
+
+    <section class="section" data-name="Stats" style="--bg: url('BG1.png')">
+
+        <div id="skillOverlay">
+            <div id="skillCard">
+
+                <h2 id="skillTitle"></h2>
+                <div id="skillXP"></div>
+
+                <div class="bar">
+                    <div class="bar-fill" style="background:${color}"></div>
+                </div>
+
+                <p id="skillDesc"></p>
+
+            </div>
+        </div>
+
+        <div class="content">
+
+            <h1 class="fade">Stats</h1>
+            <p class="fade c">Click a skill to see description. !lightblue!This part of this webside is a random idea but really funny one.!</p>
+
+            <div id="skillsContent"></div>
+
+        </div>
+
+    </section>
+
 
 
     <section class="section" data-name="Projects" style="--bg: url('BG1.png')">
@@ -422,31 +452,23 @@
 
         /* TEXT DATE TO CURRET */
         function parseDates() {
-            document.querySelectorAll(".d").forEach(el => {
+            const el = document.querySelector(".d");
+            if (!el) return;
 
-                if (el.dataset.dateParsed === "true") return;
+            const match = el.innerHTML.match(/!yyyymm:(\d{4})-(\d{2})!/);
+            if (!match) return;
 
-                let html = el.innerHTML;
+            const year = Number(match[1]);
+            const month = Number(match[2]);
 
-                const regex = /!yyyymm:(\d{4})-(\d{2})!/g;
+            const now = new Date();
 
-                html = html.replace(regex, (match, year, month) => {
+            let age = now.getFullYear() - year;
+            if (now.getMonth() + 1 < month) age--;
 
-                    const now = new Date();
-
-                    let age = now.getFullYear() - Number(year);
-
-                    if (now.getMonth() + 1 < Number(month)) {
-                        age--;
-                    }
-
-                    return age;
-                });
-
-                el.innerHTML = html;
-                el.dataset.dateParsed = "true";
-            });
+            el.innerHTML = el.innerHTML.replace(match[0], age);
         }
+
 
         window.addEventListener("load", parseDates);
 
@@ -501,54 +523,26 @@
             const elements = document.querySelectorAll(".c");
 
             const colors = [
-                "lime",
-                "magenta",
-                "white",
-                "gray",
-                "black",
+                "red", "lightred",
+                "redpink", "lightredpink",
+                "pink", "lightpink",
 
-                "red",
-                "green",
-                "blue",
-                "yellow",
-                "cyan",
-                "orange",
-                "purple",
-                "pink",
+                "purple", "lightpurple",
+                "blue", "lightblue",
+
+                "cyan", "lightcyan",
+                "aqua", "lightaqua",
+
+                "green", "lightgreen",
+                "yellow", "lightyellow",
+                "orange", "lightorange",
+
                 "brown",
-                "navy",
-                "teal",
-                "olive",
-                "maroon",
-
-                "aqua",
-                "violet",
-                "gold",
-
-                "darkred",
-                "darkblue",
-                "darkgreen",
-                "darkpurple",
-                "darkorange",
-                "darkcyan",
-
-                "neonpink",
-                "neongreen",
-                "neonblue",
-                "neonyellow",
-                "neonpurple",
-
-                "lightpink",
-                "lightblue",
-                "lightgreen",
-                "lightyellow",
-                "lavender",
-
-                "silver",
-                "bronze",
-                "indigo",
-                "crimson"
+                "white",
+                "black",
+                "gray"
             ];
+
 
 
 
@@ -700,6 +694,120 @@
         topProfile.onclick = openProfile;
         overlay.onclick = closeProfile;
 
+        /* SKILLS */
+        let skillOverlay = document.getElementById("skillOverlay");
+        let skillTitle = document.getElementById("skillTitle");
+        let skillDesc = document.getElementById("skillDesc");
+        let skillXP = document.getElementById("skillXP");
+        let skillFill = document.querySelector("#skillCard .bar-fill");
+
+        const skillData = [
+            { name: "JavaScript", xp: 560, desc: "Dumb Scripter" },
+            { name: "Blender", xp: 5913, desc: "PRO 3D Modeler" },
+            { name: "HTML/CSS", xp: 1994, desc: "Laggy, Overanimated Site Designer" },
+            { name: "Game Modding", xp: 8632, desc: "Legendary Minecraft Modder" },
+            { name: "Unity", xp: 1280, desc: "Unity Late-Beginner" },
+            { name: "MaterialMaker", xp: 5375, desc: "Somewhat-Real Grass Maker" },
+            { name: "Python", xp: 1721, desc: "Learning Snakes" },
+            { name: "Drawing IRL", xp: 9472, desc: "Mythical Artist" },
+            { name: "ProCreate", xp: 3314, desc: "AI Slop Destroyer" }
+        ];
+        function getLevelData(xp) {
+            const level = Math.floor(xp / 100);
+            const currentLevelXP = xp % 100;
+            const xpToNext = 100 - currentLevelXP;
+
+            return {
+                level,
+                currentLevelXP,
+                xpToNext
+            };
+        }
+
+
+        function getXPColor(percent, level) {
+            const hue = (percent / 100) * 120;
+            const levelFactor = Math.min(level / 100, 1);
+
+            const lightness = 25 + (levelFactor * 40);   // range: 25% → 60%
+
+            return `hsl(${hue}, 85%, ${lightness}%)`;
+        }
+
+
+
+        function renderSkills() {
+            const container = document.getElementById("skillsContent");
+            container.innerHTML = "";
+
+
+            skillData.forEach(skill => {
+
+                const lvl = getLevelData(skill.xp); 
+
+                const percent = lvl.currentLevelXP; 
+                const color = getXPColor(percent, lvl.level);
+
+
+
+                const el = document.createElement("div");
+                el.className = "skill fade";
+
+                el.innerHTML = `
+                <div class="skill-top">
+                    <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
+                    <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
+                </div>
+
+                <div class="bar">
+                    <div class="bar-fill" style="background:${color}"></div>
+                </div>
+            `;
+
+
+                el.querySelector(".bar-fill").style.width = lvl.currentLevelXP + "%";
+
+                el.onclick = () => openSkill(skill);
+
+
+                container.appendChild(el);
+
+                observer.observe(el);
+            });
+        }
+        skillOverlay.addEventListener("click", () => {
+            skillOverlay.classList.remove("show");
+        });
+
+
+        function openSkill(skill) {
+
+
+            const lvl = getLevelData(skill.xp);
+
+            skillTitle.innerText = `${skill.name} (Level ${lvl.level})`;
+            skillDesc.innerText = skill.desc;
+
+            skillXP.innerHTML = `
+            Total XP: ${skill.xp}<br>
+            Level XP: ${lvl.currentLevelXP} / 100<br>
+            XP to next level: ${lvl.xpToNext}
+        `;
+
+            skillFill.style.width = lvl.currentLevelXP + "%";
+            const percent = lvl.currentLevelXP;
+            skillFill.style.background = getXPColor(percent, lvl.level);
+
+
+
+            skillOverlay.classList.add("show");
+        }
+
+        window.addEventListener("load", renderSkills);
+
+
+
+
         /* ORBIT */
         const links = [
             { name: "Links", url: "/links.html" },
@@ -747,9 +855,9 @@
                 const blur = (1 - (z + 1) / 2) * 2;
 
                 moon.style.transform = `
-                                                                                        translate(${cx + x - 45}px, ${cy + y - 20}px)
-                                                                                        scale(${scale})
-                                                                                    `;
+                                                                                                        translate(${cx + x - 45}px, ${cy + y - 20}px)
+                                                                                                        scale(${scale})
+                                                                                                    `;
 
                 moon.style.opacity = opacity;
                 moon.style.filter = `blur(${blur}px)`;
