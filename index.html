@@ -122,7 +122,7 @@
                    data-prefix="BGRW"
                    data-count="6">
 
-                    <div class="project-title fade c">!bronze!Rimworld!</div>
+                    <div class="project-title fade c">!brown!Rimworld!</div>
                     <div class="project-desc fade c">
                         Crying when my colonist dies.
                         !lightpink!many small mods that fix 1 feature different ways are fun!
@@ -157,7 +157,6 @@
 
 
     <section class="section" data-name="Stats" style="--bg: url('BG1.png')">
-
         <div id="skillOverlay">
             <div id="skillCard">
 
@@ -176,11 +175,20 @@
         <div class="content">
 
             <h1 class="fade">Stats</h1>
-            <p class="fade c">Click a skill to see description. !lightblue!This part of this webside is a random idea but really funny one.!</p>
+            <p class="fade c">Click a skill to see description. !lightblue!This part of this webside is a random idea but a really funny one.!</p>
+
+            <div id="skillsPagination" class="fade">
+
+                <button id="prevPage"><</button>
+                <span id="pageInfo"></span>
+                <button id="nextPage">></button>
+            </div>
 
             <div id="skillsContent"></div>
 
         </div>
+
+
 
     </section>
 
@@ -701,7 +709,7 @@
         let skillXP = document.getElementById("skillXP");
         let skillFill = document.querySelector("#skillCard .bar-fill");
 
-        const skillData = [
+        const skillData = [ //      { name: "", xp: 1000, desc: "" },
             { name: "JavaScript", xp: 560, desc: "Dumb Scripter" },
             { name: "Blender", xp: 5913, desc: "PRO 3D Modeler" },
             { name: "HTML/CSS", xp: 1994, desc: "Laggy, Overanimated Site Designer" },
@@ -709,12 +717,22 @@
             { name: "Unity", xp: 1280, desc: "Unity Late-Beginner" },
             { name: "MaterialMaker", xp: 5375, desc: "Somewhat-Real Grass Maker" },
             { name: "Python", xp: 1721, desc: "Learning Snakes" },
+            { name: "RenPy", xp: 915, desc: "Reading Novels" },
             { name: "Drawing IRL", xp: 9472, desc: "Mythical Artist" },
-            { name: "ProCreate", xp: 3314, desc: "AI Slop Destroyer" }
+            { name: "ProCreate", xp: 3314, desc: "AI Slop Destroyer" },
+
+            { name: "Photography", xp: 9581, desc: "Highschool of Photography" },
+            { name: "In-Game Photography", xp: 9842, desc: "UltraSkilled Photographer" },
+            { name: "Music Making", xp: 799, desc: "Clicking a Piano" },
+            { name: "Music Editing", xp: 128, desc: "Music Deletor" },
+            { name: "Streaming", xp: 2469, desc: "'Forgot to turn off the mic' ahh Streamer" },
+            { name: "IRL Video Recording", xp: 8532, desc: "Ultra-Mega-Super-Mythical Cameraman" },
+            { name: "Game Recording", xp: 8120, desc: "Legendary Cinematic Video Recorder" },
+            { name: "Gaming", xp: 9999, desc: "Chill Game Enjoyer" }
         ];
         function getLevelData(xp) {
             const level = Math.floor(xp / 100);
-            const currentLevelXP = xp % 100;
+            const currentLevelXP = xp % 100 + 1;
             const xpToNext = 100 - currentLevelXP;
 
             return {
@@ -729,55 +747,86 @@
             const hue = (percent / 100) * 120;
             const levelFactor = Math.min(level / 100, 1);
 
-            const lightness = 25 + (levelFactor * 40);   // range: 25% → 60%
+            const lightness = 25 + (levelFactor * 50);   // range: 25% → 60%
 
             return `hsl(${hue}, 85%, ${lightness}%)`;
         }
 
 
+        let currentPage = 1;
+        const skillsPerPage = 10; 
 
         function renderSkills() {
             const container = document.getElementById("skillsContent");
             container.innerHTML = "";
 
+            const start = (currentPage - 1) * skillsPerPage;
+            const end = start + skillsPerPage;
+            const pageSkills = skillData.slice(start, end);
 
-            skillData.forEach(skill => {
+            pageSkills.forEach(skill => {
 
-                const lvl = getLevelData(skill.xp); 
-
-                const percent = lvl.currentLevelXP; 
+                const lvl = getLevelData(skill.xp);
+                const percent = lvl.currentLevelXP;
                 const color = getXPColor(percent, lvl.level);
-
-
 
                 const el = document.createElement("div");
                 el.className = "skill fade";
 
                 el.innerHTML = `
-                <div class="skill-top">
-                    <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
-                    <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
-                </div>
+            <div class="skill-top">
+                <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
+                <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
+            </div>
 
-                <div class="bar">
-                    <div class="bar-fill" style="background:${color}"></div>
-                </div>
-            `;
+            <div class="bar">
+                <div class="bar-fill" style="background:${color}"></div>
+            </div>
+        `;
 
-
-                el.querySelector(".bar-fill").style.width = lvl.currentLevelXP + "%";
+                el.querySelector(".bar-fill").style.width = percent + "%";
 
                 el.onclick = () => openSkill(skill);
-
 
                 container.appendChild(el);
 
                 observer.observe(el);
             });
+
+            updatePagination();
         }
         skillOverlay.addEventListener("click", () => {
             skillOverlay.classList.remove("show");
         });
+
+        const prevBtn = document.getElementById("prevPage");
+        const nextBtn = document.getElementById("nextPage");
+        const pageInfo = document.getElementById("pageInfo");
+
+        function updatePagination() {
+            const totalPages = Math.ceil(skillData.length / skillsPerPage);
+
+            pageInfo.innerText = `Page ${currentPage} / ${totalPages}`;
+
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+        }
+
+        prevBtn.onclick = () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderSkills();
+            }
+        };
+
+        nextBtn.onclick = () => {
+            const totalPages = Math.ceil(skillData.length / skillsPerPage);
+
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderSkills();
+            }
+        };
 
 
         function openSkill(skill) {
