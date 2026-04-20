@@ -174,13 +174,10 @@ body {
 
 
 /* About Me part */
-
 #skillsContent {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; 
-    column-gap: 10px;
-    row-gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
     width: 100%;
     max-width: 900px;
     margin: 20px auto;
@@ -189,7 +186,7 @@ body {
 .skill {
     position: relative;
     width: 100%;
-    max-width: 380px;
+    max-width: none;
     padding: 15px;
     border-radius: 14px;
     cursor: pointer;
@@ -201,7 +198,6 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.10);
     transition: transform 0.25s ease, background 0.25s ease, border 0.25s ease;
-
 }
 
     .skill:hover {
@@ -319,42 +315,6 @@ body {
 }
 
 
-@media (max-width: 900px) {
-    .skill {
-        max-width: 280px;
-    }
-}
-@media (max-width: 700px) {
-    #skillsContent {
-        grid-template-columns: repeat(2, 1fr);
-        column-gap: 8px;
-        row-gap: 3px;
-    }
-    .skill {
-        max-width: 180px;
-
-    }
-}
-@media (max-width: 500px) {
-    #skillsContent {
-        grid-template-columns: repeat(2, 1fr);
-        column-gap: 3px;
-        row-gap: 3px;
-    }
-
-    .skill {
-        max-width: 150px;
-    }
-}
-@media (max-width: 430px) {
-    .skill-top, .skill-meta {
-        font-size: 7px;
-    }
-
-    .skill {
-        max-width: 120px;
-    }
-}
 /* Skill page buttons */
 #skillsPagination {
     display: flex;
@@ -476,7 +436,7 @@ img {
 
 .social-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(45%, 180px), 1fr));
     gap: 15px;
     width: min(900px, 90vw);
     margin: 0 auto;
@@ -484,10 +444,6 @@ img {
     opacity: 0.85;
 }
 
-@media (max-width: 900px) {
-    .social-grid {
-    }
-}
 
 #bigLink {
     font-size: 16px;
@@ -665,7 +621,7 @@ p {
     border-right: 2px solid rgba(255,255,255,0.2);
     text-align: right;
     background: fixed;
-    background-color: rgb(0, 0, 0, 0.41);
+    background-color: rgb(0, 0, 0, 0.21);
 }
 
     /* hover effect */
@@ -678,10 +634,11 @@ p {
 
     /* active section highlight */
     .nav-item.active {
+        color: rgb(255, 102, 102);
         opacity: 1;
         border-right: 2px solid red;
         transform: translateX(-7px);
-        background-color: rgb(0, 0, 0, 1);
+        background-color: rgb(0, 0, 0, 0.4);
     }
 
 
@@ -695,7 +652,15 @@ p {
 /* prevent selection */
 * {
     user-select: none;
+
 }
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+
 
 /* overlay */
 #overlay {
