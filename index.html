@@ -14,7 +14,6 @@
 
 
 
-
     <div id="socialOverlay">
         <div id="socialCard">
             <img id="bigAvatar">
@@ -320,7 +319,12 @@
         </div>
     </section>
 
-
+    <section class="section" data-name="Top Games" style="--bg: url('BG1.png')">
+        <div class="content">
+            <h1 class="fade">Top Rated Games</h1>
+            <p class="fade">You can learn about my favourite games. Here are some examples.</p>
+        </div>
+    </section>
 
 
 
@@ -754,7 +758,7 @@
 
 
         let currentPage = 1;
-        const skillsPerPage = 10; 
+        const skillsPerPage = 10;
 
         function renderSkills() {
             const container = document.getElementById("skillsContent");
@@ -774,15 +778,15 @@
                 el.className = "skill fade";
 
                 el.innerHTML = `
-            <div class="skill-top">
-                <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
-                <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
-            </div>
+                <div class="skill-top">
+                    <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
+                    <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
+                </div>
 
-            <div class="bar">
-                <div class="bar-fill" style="background:${color}"></div>
-            </div>
-        `;
+                <div class="bar">
+                    <div class="bar-fill" style="background:${color}"></div>
+                </div>
+            `;
 
                 el.querySelector(".bar-fill").style.width = percent + "%";
 
@@ -838,10 +842,10 @@
             skillDesc.innerText = skill.desc;
 
             skillXP.innerHTML = `
-            Total XP: ${skill.xp}<br>
-            Level XP: ${lvl.currentLevelXP} / 100<br>
-            XP to next level: ${lvl.xpToNext}
-        `;
+                Total XP: ${skill.xp}<br>
+                Level XP: ${lvl.currentLevelXP} / 100<br>
+                XP to next level: ${lvl.xpToNext}
+            `;
 
             skillFill.style.width = lvl.currentLevelXP + "%";
             const percent = lvl.currentLevelXP;
@@ -862,7 +866,9 @@
             { name: "Links", url: "/links.html" },
             { name: "Projects", url: "/projects.html" },
             { name: "Graph", url: "/projectsgraph.html" },
+            { name: "Tierlists", url: "/tierlist.html" },
             { name: "Socials", url: "/socials.html" }
+            
         ];
 
         const orbit = document.getElementById("orbit");
@@ -904,9 +910,9 @@
                 const blur = (1 - (z + 1) / 2) * 2;
 
                 moon.style.transform = `
-                                                                                                        translate(${cx + x - 45}px, ${cy + y - 20}px)
-                                                                                                        scale(${scale})
-                                                                                                    `;
+                                                                                                            translate(${cx + x - 45}px, ${cy + y - 20}px)
+                                                                                                            scale(${scale})
+                                                                                                        `;
 
                 moon.style.opacity = opacity;
                 moon.style.filter = `blur(${blur}px)`;
@@ -914,7 +920,7 @@
                 moon.style.zIndex = Math.floor((z + 1) * 100);
             });
 
-            angleOffset += 0.01;
+            angleOffset += 0.012;
 
             requestAnimationFrame(animateOrbit);
         }
