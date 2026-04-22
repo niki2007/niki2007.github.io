@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niko - Top Games</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    overflow: hidden;
+                    background: url('BG1.png') center/cover fixed no-repeat;
+                    font-family: 'Minecraft', sans-serif;
+                    color: white;
+                }
+
+                    body::before {
+                        content: "";
+                        position: fixed;
+                        inset: 0;
+                        background: rgba(0,0,0,0.65);
+                        pointer-events: none;
+                    }
+
+
+        #menu {
+            position: fixed;
+            padding-top: 80px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+
+                select {
+                    padding: 8px;
+                    border-radius: 8px;
+                    background: rgba(0,0,0,0.7);
+                    color: white;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    font-family: 'Minecraft', sans-serif;
+                }
+
+
+                #viewport {
+                    position: fixed;
+                    inset: 0;
+                    overflow: hidden;
+                }
+
+                #scrollContainer {
+                    position: absolute;
+                    width: 100%;
+                    top: 0;
+                    left: 0;
+                    will-change: transform;
+                }
+
+                .tier {
+                    min-height: 100vh;
+                    padding: 120px 20px 60px;
+                    box-sizing: border-box;
+                }
+
+                .container {
+                    width: min(900px, 95vw);
+                    margin: auto;
+                }
+
+                h1 {
+                    font-size: 40px;
+                    margin: 0 0 10px;
+                }
+
+                h2 {
+                    opacity: 0.7;
+                    margin-top: 0;
+                }
+
+                .game {
+                    margin: 20px 0;
+                    padding: 15px;
+                    border-radius: 12px;
+                    background: rgba(255,255,255,0.06);
+                }
+
+        .summary-list li {
+            margin-bottom: 14px;
+            line-height: 1.3;
+            font-size: 13px;
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+    <!-- MENU -->
+    <div id="menu">
+        <select id="tierSelect"></select>
+    </div>
+    <div id="nav"></div>
+
+    <!-- VIEWPORT -->
+    <div id="viewport">
+        <div id="scrollContainer"></div>
+    </div>
+    <div id="imageViewer">
+        <img id="viewerImg">
+    </div>
+
+    <script>
+        const data = [
+            {
+                "id": "10pc_best",
+                "title": "TOP 10 Best Computer games of all time",
+                "subtitle": "Best games no matter the category. ",
+                "summary": [
+                    "Minecraft - for it's varienty of everything. You can craft any other game from Minecraft with mods.",
+                    "GTA 5 - for it's massive open map and the number of things you can do. Their physics engine is the best and is soo much fun.",
+                    "Rimworld - for it's limitless gameplay customization, and ultra realism. You can make zombie survival or alien wars or anything, while still having full realism.",
+                    "Garrys Mod - for everything, there isn't a thing you can't do. From playing Roleplay to having the best drifting game to the best 1V1 with your friend not possible in any other game.",
+                    "Mindustry - for the best and most complex tower defence game that exists. Millions of turrets that sound and look awesome with mods.",
+                    "Barotrauma - for the creepiest but most realistic submarine exploration sim. With many mods you can be fighting different fishes and monsters every single time you start a mission.",
+                    "Project Zomboid - for the scariest, most terrifying, realistic zombie survival game. This game just gives a feeling that no other game does that's all you need to know.",
+                    "People Playground - for the rage erasing expirience, literary i feel so calm after throwing buildings on some dolls. With all the tools everything is possible and it might not even look like it.",
+                    "Geometry Dash - for the crazy levels that people made. Playing Doom in a cube jumping game? How? Btw i don't call this a game i call it a programming language. lol",
+                    "Hytale - for the greatest community of all time. Similar to Minecraft but better, tho it needs some time to develop. (at the time describing it's still not released)"
+                ],
+                "games": [
+                    {
+                        "rank": 1,
+                        "name": "Minecraft (With Curseforge)",
+                        "desc": "Content+++++++, Mods+++++++, Sandbox+++++++, Openworld+++++++, Replayability+++++++, Experience Customization+++++++",
+                        "images": []
+                    },
+                    {
+                        "rank": "2",
+                        "name": "GTA 5",
+                        "desc": "Content+++++, Mods++++, Sandbox++++++, Openworld++++++, Replayability++++++, Experience Customization",
+                        "images": []
+                    },
+                    {
+                        "rank": "3",
+                        "name": "Rimworld (With Workshop)",
+                        "desc": "Content++++++, Mods+++++++, Sandbox+++++++, Openworld+++++++, Replayability+++++, Experience Customization+++++++",
+                        "images": []
+                    },
+                    {
+                        "rank": "4",
+                        "name": "Garrys Mod (With Workshop)",
+                        "desc": "Content+++++++, Mods+++++++, Sandbox+++++++, Openworld++++++, Replayability+++++++, Experience Customization+++++++",
+                        "images": []
+                    },
+                    {
+                        "rank": "5",
+                        "name": "Mindustry (With Mods)",
+                        "desc": "Content+++++, Mods++++++, Sandbox+++++++, Openworld++++++, Replayability+++, Experience Customization++++++",
+                        "images": []
+                    },
+                    {
+                        "rank": "6",
+                        "name": "Barotrauma (With Workshop)",
+                        "desc": "Content++++++, Mods++++++, Sandbox+++++, Openworld+++++, Replayability+++++, Experience Customization++++++",
+                        "images": []
+                    },
+                    {
+                        "rank": "7",
+                        "name": "Project Zomboid (With Workshop)",
+                        "desc": "Content++++++, Mods++++++, Sandbox++++++, Openworld++++++, Replayability++++, Experience Customization++++++",
+                        "images": []
+                    },
+                    {
+                        "rank": "8",
+                        "name": "People Playground (With Workshop)",
+                        "desc": "Content++++, Mods+++++, Sandbox+++++++, Openworld++++, Replayability+++, Experience Customization",
+                        "images": []
+                    },
+                    {
+                        "rank": "9",
+                        "name": "Geometry Dash (With Geode)",
+                        "desc": "Content+++++, Mods++++++, Sandbox+++++, Openworld, Replayability+++++, Experience Customization+++++",
+                        "images": []
+                    },
+                    {
+                        "rank": "10",
+                        "name": "Hytale (With Curseforge) ",
+                        "desc": "Content++++++, Mods++++++, Sandbox+++++++, Openworld+++++++, Replayability+++++, Experience Customization+++++++",
+                        "images": []
+                    }
+                ]
+            },
+            {
+                "id": "10mb_best",
+                "title": "TOP 10 Best Mobile games of all time",
+                "subtitle": "Best games no matter the category.",
+                "summary": [
+                    ""
+                ],
+                "games": [
+                    {
+                        "rank": 1,
+                        "name": "",
+                        "desc": "",
+                        "images": []
+                    }
+                ]
+            }
+        ];
+
+        const scrollContainer = document.getElementById("scrollContainer");
+        const select = document.getElementById("tierSelect");
+        const nav = document.getElementById("nav");
+
+        let currentIndex = 0;
+        let currentY = 0;
+        let targetY = 0;
+
+        let sections = [];
+
+        /* CERTAIN COLORING */
+        function colorKeywords(text) {
+            const rules = {
+                "Mobile": "#4da6ff",
+                "Computer": "#4dff88",
+                "PC": "#4dff88",
+                "Console": "#ff9f43"
+            };
+
+            Object.keys(rules).forEach(word => {
+                const regex = new RegExp(`\\b${word}\\b`, "gi");
+
+                text = text.replace(regex, match => {
+                    return `<span style="color:${rules[word]}; font-weight:bold;">${match}</span>`;
+                });
+            });
+
+            return text;
+        }
+        function colorRatings(text) {
+            return text.replace(
+                /([A-Za-z0-9\s]+?)(\+{1,}|\-{1,})/g,
+                (match, word, rating) => {
+                    word = word.trim();
+
+                    const count = rating.length;
+                    const type = rating[0];
+
+                    let color;
+
+                    if (type === "+" && count === 6) {
+                        color = "#67feed";
+                    }
+                    else if (type === "+" && count >= 7) {
+                        color = "#e100ff";
+                    }
+                    else if (type === "+") {
+                        const greens = [
+                            "#8bc34a", // +1
+                            "#66bb6a", // +2
+                            "#43a047", // +3
+                            "#2e7d32", // +4
+                            "#00ff00"  // +5
+                        ];
+                        color = greens[Math.min(count, 5) - 1];
+                    }
+                    else if (type === "-") {
+                        const reds = [
+                            "#ff9999", // -1
+                            "#ff6666", // -2
+                            "#ff3333", // -3
+                            "#cc0000", // -4
+                            "#990000"  // -5
+                        ];
+                        color = reds[Math.min(count, 5) - 1];
+                    }
+
+                    return `<span style="color:${color}; font-weight:bold;">
+            ${word}<span style="font-size:0.75em; opacity:0.8;">${rating}</span>
+        </span>`;
+
+                }
+            );
+        }
+
+
+        /* BUILD */
+        function build() {
+
+            data.forEach(tier => {
+
+                const opt = document.createElement("option");
+                opt.value = tier.id;
+                opt.innerText = tier.title;
+                select.appendChild(opt);
+
+                const section = document.createElement("div");
+                section.className = "tier";
+                section.id = tier.id;
+
+                section.innerHTML = `
+                        <div class="container">
+<h1>${colorKeywords(tier.title)}</h1>
+<h2>${colorKeywords(tier.subtitle)}</h2>
+
+
+                            ${tier.games.map(g => `
+                                <div class="game">
+                                    <b>#${g.rank} ${g.name}</b>
+<div style="margin-top:10px;">
+        <div style="
+            font-size:12px;
+            opacity:0.5;
+            margin-bottom:0px;
+            text-transform:uppercase;
+            letter-spacing:1px;
+        ">
+            Scoring based on tags.
+        </div>
+
+        <div style="opacity:0.8">
+            ${colorRatings(colorKeywords(g.desc))}
+        </div>
+</div>
+
+                                    <div class="gallery">
+                                        ${g.images.map(img => `<img src="${img}">`).join("")}
+                                    </div>
+                                </div>
+                            `).join("")}
+
+<div style="margin-top:40px; opacity:0.7">
+        <b>Summary:</b>
+        <ol class="summary-list">
+${tier.summary.map((line) => {
+
+    const colors = [
+        "#ff6666", "#ff4d4d", "#e60000", "#b30000", "#ff9999",
+        "#66ff66", "#4dff4d", "#00e600", "#009900", "#99ff99",
+        "#66aaff", "#4da6ff", "#1a75ff", "#005ce6", "#99ccff",
+        "#ffcc66", "#ffb84d", "#ff9900", "#e68a00", "#ffd699",
+        "#ff66ff", "#ff4dff", "#e600e6", "#b300b3", "#ff99ff",
+        "#00ffff", "#00e6e6", "#00cccc", "#009999", "#99ffff",
+        "#ffffff", "#e6e6e6", "#cccccc", "#999999", "#666666",
+        "#ffd700", "#ffdf4d", "#e6c200", "#b38f00", "#fff2b3",
+        "#a066ff", "#804dff", "#6633ff", "#4d1aff", "#ccb3ff",
+        "#00ff99", "#00e68a", "#00b36b", "#008055", "#99ffd6"
+    ];
+
+
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    const splitIndex = line.indexOf(" - ");
+
+    const name = splitIndex !== -1
+        ? line.slice(0, splitIndex)
+        : line;
+
+    const desc = splitIndex !== -1
+        ? line.slice(splitIndex + 3)
+        : "";
+
+    return `
+        <li style="margin-bottom:12px;">
+            <span style="color:${color}; font-weight:bold;">
+                ${name}
+            </span>
+            <span style="opacity:0.8;">
+                ${desc ? " - " + colorRatings(colorKeywords(desc)) : ""}
+            </span>
+        </li>
+    `;
+}).join("")}
+
+
+
+
+
+
+        </ol>
+</div>
+                        </div>
+                    `;
+
+                scrollContainer.appendChild(section);
+            });
+
+            sections = document.querySelectorAll(".tier");
+            select.value = data[0].id;
+        }
+
+        /* SMOOTH SCROLL ENGINE */
+        function animateScroll() {
+            currentY += (targetY - currentY) * 0.1;
+            scrollContainer.style.transform = `translateY(${-currentY}px)`;
+            requestAnimationFrame(animateScroll);
+        }
+
+        /* WHEEL SCROLL */
+        window.addEventListener("wheel", e => {
+
+            const sensitivity = 1.8;
+
+            targetY += e.deltaY * sensitivity;
+
+            const maxScroll =
+                scrollContainer.scrollHeight - window.innerHeight;
+
+            targetY = Math.max(0, Math.min(targetY, maxScroll));
+        });
+
+        /* GALLERY */
+        const imageViewer = document.getElementById("imageViewer");
+        const viewerImg = document.getElementById("viewerImg");
+
+        /* open image */
+        document.addEventListener("click", (e) => {
+            if (e.target.matches(".gallery img")) {
+                viewerImg.src = e.target.src;
+                imageViewer.classList.add("active");
+            }
+        });
+
+        /* close when clicking background */
+        imageViewer.addEventListener("click", () => {
+            imageViewer.classList.remove("active");
+        });
+
+        /* MOBILE TOUCH SCROLL */
+        let touchStartY = 0;
+        let touchStartScroll = 0;
+
+        window.addEventListener("touchstart", (e) => {
+            touchStartY = e.touches[0].clientY;
+            touchStartScroll = targetY;
+        }, { passive: true });
+
+        window.addEventListener("touchmove", (e) => {
+            const touchY = e.touches[0].clientY;
+            const delta = (touchStartY - touchY) * 1.8;
+
+            targetY = touchStartScroll + delta;
+
+            const maxScroll =
+                scrollContainer.scrollHeight - window.innerHeight;
+
+            targetY = Math.max(0, Math.min(targetY, maxScroll));
+        }, { passive: true });
+
+        /* DROPDOWN */
+        select.addEventListener("change", e => {
+            const el = document.getElementById(e.target.value);
+            targetY = el.offsetTop;
+        });
+
+        /* NAV BUILD */
+        function buildNav() {
+            nav.innerHTML = "";
+
+            data.forEach((tier, i) => {
+                const item = document.createElement("div");
+                item.className = "nav-item";
+                item.innerText = tier.title;
+
+                item.onclick = () => {
+                    currentIndex = i;
+                    targetY = document.getElementById(tier.id).offsetTop;
+                };
+
+                nav.appendChild(item);
+            });
+        }
+
+        buildNav();
+
+        /* NAV UPDATE (FIXED) */
+        function updateNav() {
+
+            const center = currentY + window.innerHeight / 2;
+
+            let newIndex = 0;
+
+            for (let i = 0; i < sections.length; i++) {
+                const el = sections[i];
+                const top = el.offsetTop;
+                const bottom = top + el.offsetHeight;
+
+                if (center >= top && center < bottom) {
+                    newIndex = i;
+                    break;
+                }
+            }
+
+            currentIndex = newIndex;
+
+            document.querySelectorAll(".nav-item").forEach((item, i) => {
+                item.classList.toggle("active", i === currentIndex);
+            });
+
+            requestAnimationFrame(updateNav);
+        }
+
+        /* DROPDOWN SYNC (OPTIONAL BUT STABLE) */
+        function updateDropdown() {
+            let closest = data[0].id;
+            let minDist = Infinity;
+
+            data.forEach(t => {
+                const el = document.getElementById(t.id);
+                const dist = Math.abs(el.offsetTop - currentY);
+
+                if (dist < minDist) {
+                    minDist = dist;
+                    closest = t.id;
+                }
+            });
+
+            select.value = closest;
+            requestAnimationFrame(updateDropdown);
+        }
+
+        /* START */
+        build();
+        animateScroll();
+        updateNav();
+        updateDropdown();
+    </script>
+
+</body>
+</html>
