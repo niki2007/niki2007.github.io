@@ -88,12 +88,13 @@ body {
 
 
 
+
 /* GRID SECTIONS */
 /* MAIN */
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 44px;
+    column-gap: 11px;
     row-gap: 11px;
     width: min(1300px, 90vw);
     margin-left: auto;
@@ -106,7 +107,7 @@ body {
     text-decoration: none;
     color: inherit;
     width: 100%;
-    height: 280px;
+    height: clamp(140px, 7vh + 10vw, 420px);
     padding-left: 15px;
     padding-right: 15px;
     border-radius: 25px;
@@ -132,19 +133,12 @@ body {
     position: relative;
     z-index: 2;
 }
-
-@media (max-width: 700px) {
-
+@media (max-aspect-ratio: 1/1) {
     .projects-grid {
         grid-template-columns: 1fr;
-        justify-items: center;
-        align-items: center;
-    }
-
-    .project-card {
-        height: 140px;
     }
 }
+
     .project-card::before {
         content: "";
         position: absolute;
@@ -544,14 +538,13 @@ img {
 
 
 h1 {
-    font-size: 60px;
-    margin: 0;
+    font-size: clamp(28px, 6vw, 60px);
 }
 
 p {
-    font-size: 18px;
-    opacity: 0.8;
+    font-size: clamp(10px, 2vw, 18px);
 }
+
 
 .fade {
     opacity: 0;
@@ -735,6 +728,144 @@ p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Top Games Images */
+.gallery {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 10px;
+    scroll-behavior: smooth;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+    /* images */
+    .gallery img {
+        height: 150px;
+        border-radius: 8px;
+        flex-shrink: 0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .gallery img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px rgba(255, 80, 80, 0.4);
+    }
+
+    .gallery::-webkit-scrollbar {
+        height: 12px;
+    }
+
+    .gallery::-webkit-scrollbar-track {
+        background: rgb(255, 28, 28, 0.15);
+        border-radius: 999px;
+    }
+
+    .gallery::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.08);
+        border-radius: 999px;
+    }
+
+        .gallery::-webkit-scrollbar-thumb:hover {
+            background: rgb(255, 28, 28, 0.35);
+        }
+
+/* FULLSCREEN IMAGE VIEWER */
+#imageViewer {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+    #imageViewer.active {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+#viewerImg {
+    max-width: 85vw;
+    max-height: 85vh;
+    border-radius: 12px;
+    box-shadow: 0 0 30px rgba(255,80,80,0.4);
+    transform: scale(0.9);
+    transition: transform 0.25s ease;
+}
+
+#imageViewer.active #viewerImg {
+    transform: scale(1);
+}
 
 
 
