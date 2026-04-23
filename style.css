@@ -30,12 +30,20 @@ body {
     inset: 0;
     background: black;
     color: white;
-    display: none;
-    align-items: center;
+    display: flex;
     justify-content: center;
-    font-size: 40px;
-    z-index: 999999;
+    align-items: center;
+    z-index: 99999;
+    font-size: clamp(10px, 5vw, 80px);
+    font-weight: bold;
+    letter-spacing: 3px;
+    white-space: nowrap;
+    text-align: center;
+    padding: 20px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
 }
+
 
 
 /* COLORED TEXT JS */
@@ -578,6 +586,29 @@ p {
     border: 2px solid white;
     cursor: pointer;
 }
+    .profile-pic.pulse {
+        animation: pulseGlow 0.8s ease;
+    }
+
+@keyframes pulseGlow {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255,255,255,0);
+        filter: invert(0);
+    }
+
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 50px rgba(255,255,255,0.5);
+        filter: invert(0.2);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255,255,255,0);
+        filter: invert(0);
+    }
+}
 
 /* CURSOR SHADOW */
 #cursorLight {
@@ -652,7 +683,16 @@ p {
     *::after {
         box-sizing: border-box;
     }
+/* Hide scrollbars globally */
+html, body {
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
 
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+        display: none; 
+    }
 
 
 /* overlay */
@@ -865,6 +905,31 @@ p {
 
 #imageViewer.active #viewerImg {
     transform: scale(1);
+}
+.image-item {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.image-label {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.image-item:hover .image-label {
+    opacity: 1;
+    bottom: 15px;
 }
 
 
