@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body data-maintenance="false">
+<body>
     <div id="maintenanceScreen">
-        SITE UNDER CONSTRUCTION
+        SITE IN BETA - code 1/10done
     </div>
 
 
@@ -512,20 +512,29 @@
 
                 setImage(index);
 
-            }, 4000);
+            }, 10000);
         });
 
-        /* MAITNANCE SCREEN */
+        /* LOADING SCREEN */
         window.addEventListener("load", () => {
-            const isMaintenance = document.body.dataset.maintenance === "true";
-
             const screen = document.getElementById("maintenanceScreen");
 
-            if (isMaintenance) {
-                screen.style.display = "flex";
-                document.body.style.overflow = "hidden";
-            }
+            document.body.style.overflow = "hidden";
+
+            screen.style.opacity = "1";
+            screen.style.display = "flex";
+
+            setTimeout(() => {
+                screen.style.opacity = "0";
+
+                setTimeout(() => {
+                    screen.style.display = "none";
+                    document.body.style.overflow = "auto";
+                }, 500);
+            }, 2000);
         });
+
+
 
 
 
@@ -577,7 +586,7 @@
         window.addEventListener("load", parseCustomColors);
 
         /* FIX GITHUB LOADING IMAGES */
-        function progressivePreload(prefix, count, delay = 800) {
+        function progressivePreload(prefix, count, delay = 8000) {
             let i = 1;
 
             function loadNext() {
@@ -859,7 +868,18 @@
         window.addEventListener("load", renderSkills);
 
 
+        /* ANIMATE PROFILE PIC */
+        const profilePic = document.querySelector(".profile-pic");
 
+        function pulseProfile() {
+            profilePic.classList.add("pulse");
+
+            setTimeout(() => {
+                profilePic.classList.remove("pulse");
+            }, 800);
+        }
+
+        setInterval(pulseProfile, 15000);
 
         /* ORBIT */
         const links = [
