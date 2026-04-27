@@ -122,9 +122,9 @@
                 "subtitle": "Best games no matter the category. ",
                 "summary": [
                     "Minecraft - for it's varienty of everything. You can craft any other game from Minecraft with mods.",
-                    "GTA 5 - for it's massive open map and the number of things you can do. Their physics engine is the best and is soo much fun.",
-                    "Rimworld - for it's limitless gameplay customization, and ultra realism. You can make zombie survival or alien wars or anything, while still having full realism.",
                     "Garrys Mod - for everything, there isn't a thing you can't do. From playing Roleplay to having the best drifting game to the best 1V1 with your friend not possible in any other game.",
+                    "Rimworld - for it's limitless gameplay customization, and ultra realism. You can make zombie survival or alien wars or anything, while still having full realism.",
+                    "GTA 5 - for it's massive open map and the number of things you can do. Their physics engine is the best and is soo much fun.",
                     "Mindustry - for the best and most complex tower defence game that exists. Millions of turrets that sound and look awesome with mods.",
                     "Barotrauma - for the creepiest but most realistic submarine exploration sim. With many mods you can be fighting different fishes and monsters every single time you start a mission.",
                     "Project Zomboid - for the scariest, most terrifying, realistic zombie survival game. This game just gives a feeling that no other game does that's all you need to know.",
@@ -141,8 +141,8 @@
                     },
                     {
                         "rank": "2",
-                        "name": "GTA 5",
-                        "desc": "Content+++++, Mods++++, Sandbox++++++, Openworld++++++, Replayability++++++, Experience Customization",
+                        "name": "Garrys Mod (With Workshop)",
+                        "desc": "Content+++++++, Mods+++++++, Sandbox+++++++, Openworld++++++, Replayability+++++++, Experience Customization+++++++",
                         "images": []
                     },
                     {
@@ -153,8 +153,8 @@
                     },
                     {
                         "rank": "4",
-                        "name": "Garrys Mod (With Workshop)",
-                        "desc": "Content+++++++, Mods+++++++, Sandbox+++++++, Openworld++++++, Replayability+++++++, Experience Customization+++++++",
+                        "name": "GTA 5",
+                        "desc": "Content+++++, Mods++++, Sandbox++++++, Openworld++++++, Replayability++++++, Experience Customization+",
                         "images": []
                     },
                     {
@@ -178,13 +178,13 @@
                     {
                         "rank": "8",
                         "name": "People Playground (With Workshop)",
-                        "desc": "Content++++, Mods+++++, Sandbox+++++++, Openworld++++, Replayability+++, Experience Customization",
+                        "desc": "Content++++, Mods+++++, Sandbox+++++++, Openworld++++, Replayability+++, Experience Customization--",
                         "images": []
                     },
                     {
                         "rank": "9",
                         "name": "Geometry Dash (With Geode)",
-                        "desc": "Content+++++, Mods++++++, Sandbox+++++, Openworld, Replayability+++++, Experience Customization+++++",
+                        "desc": "Content+++++, Mods++++++, Sandbox+++++, Openworld-----, Replayability+++++, Experience Customization+++++",
                         "images": []
                     },
                     {
@@ -311,7 +311,13 @@
 
                             ${tier.games.map(g => `
                                 <div class="game">
-                                    <b>#${g.rank} ${g.name}</b>
+<div style="
+    font-size:28px;
+    font-weight:bold;
+    margin-bottom:10px;
+">
+    #${g.rank} ${g.name}
+</div>
 <div style="margin-top:10px;">
         <div style="
             font-size:12px;
@@ -323,13 +329,22 @@
             Scoring based on tags.
         </div>
 
-        <div style="opacity:0.8">
+        <div style="
+            opacity:0.8;         
+            font-size:11px;
+        ">
             ${colorRatings(colorKeywords(g.desc))}
         </div>
 </div>
 
                                     <div class="gallery">
-                                        ${g.images.map(img => `<img src="${img}">`).join("")}
+${g.images.map(img => `
+    <div class="image-item">
+        <img src="${img}">
+        <div class="image-label">${img.replace(".png", "")}
+</div>
+    </div>
+`).join("")}
                                     </div>
                                 </div>
                             `).join("")}
