@@ -485,7 +485,6 @@ img {
     }
 
     .social-tile:hover {
-        color: pink;
         border-radius: 14px;
     }
 
@@ -953,18 +952,27 @@ html, body {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 50px; 
-    background: rgb(49, 7, 26, 0.06);
+    height: auto;
+    background: rgba(49, 7, 26, 0.06);
     backdrop-filter: blur(10px);
-    border-top: 2px solid rgb(255, 0, 164, 0.11);
+    border-top: 3px solid rgba(255, 0, 164, 0.11);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 10px;
     z-index: 9999;
     transform: translateY(100%);
     transition: transform 0.5s ease-out;
+    flex-direction: column;
+    padding: 10px 0;
+    text-align: center;
 }
+    #contactBar .contact-sub {
+        font-size: 13px;
+        opacity: 0.3;
+        text-align: center;
+        color: #ff99fa;
+    }
 
     #contactBar a {
         color: #ff00f2;
@@ -975,6 +983,25 @@ html, body {
             text-decoration: underline;
         }
 
+
+/* RAINBOW TEXT */
+.rainbow {
+    font-weight: 600;
+    background: linear-gradient(330deg, #ff004c, #ff7a00, #ffe600, #00ff85, #00c3ff, #7a00ff, #ff004c );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbowMove 5s linear infinite;
+}
+@keyframes rainbowMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 300% 50%;
+    }
+}
 
 
 
