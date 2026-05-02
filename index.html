@@ -9,7 +9,7 @@
 
 <body>
     <div id="maintenanceScreen">
-        SITE IN BETA - code 1/10done
+        SITE IN BETA - code 2/10done
     </div>
 
 
@@ -326,6 +326,10 @@
         </div>
     </section>
 
+    <div id="contactBar">
+        <span>Contact me:</span>
+        <a href="https://discord.gg/weQXsMrND2" target="_blank">Discord</a>
+    </div>
 
 
 
@@ -443,16 +447,16 @@
         window.addEventListener("load", () => {
             updateActiveNav();
         });
+
         function updateActiveNav() {
             const navItems = document.querySelectorAll(".nav-item");
+            const scrollY = window.scrollY;
 
             sections.forEach((sec, i) => {
-                const rect = sec.getBoundingClientRect();
+                const top = sec.offsetTop;
+                const bottom = top + sec.offsetHeight;
 
-                if (
-                    rect.top <= window.innerHeight / 2 &&
-                    rect.bottom >= window.innerHeight / 2
-                ) {
+                if (scrollY >= top - 10 && scrollY < bottom - 10) {
                     navItems.forEach(n => n.classList.remove("active"));
                     if (navItems[i]) navItems[i].classList.add("active");
 
@@ -460,6 +464,9 @@
                 }
             });
         }
+
+        window.addEventListener("scroll", updateActiveNav);
+
 
 
         /* TEXT DATE TO CURRET */
@@ -531,7 +538,7 @@
                     screen.style.display = "none";
                     document.body.style.overflow = "auto";
                 }, 500);
-            }, 2000);
+            }, 200);
         });
 
 
@@ -787,15 +794,15 @@
                 el.className = "skill fade";
 
                 el.innerHTML = `
-                <div class="skill-top">
-                    <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
-                    <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
-                </div>
+                    <div class="skill-top">
+                        <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
+                        <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
+                    </div>
 
-                <div class="bar">
-                    <div class="bar-fill" style="background:${color}"></div>
-                </div>
-            `;
+                    <div class="bar">
+                        <div class="bar-fill" style="background:${color}"></div>
+                    </div>
+                `;
 
                 el.querySelector(".bar-fill").style.width = percent + "%";
 
@@ -851,10 +858,10 @@
             skillDesc.innerText = skill.desc;
 
             skillXP.innerHTML = `
-                Total XP: ${skill.xp}<br>
-                Level XP: ${lvl.currentLevelXP} / 100<br>
-                XP to next level: ${lvl.xpToNext}
-            `;
+                    Total XP: ${skill.xp}<br>
+                    Level XP: ${lvl.currentLevelXP} / 100<br>
+                    XP to next level: ${lvl.xpToNext}
+                `;
 
             skillFill.style.width = lvl.currentLevelXP + "%";
             const percent = lvl.currentLevelXP;
@@ -866,6 +873,20 @@
         }
 
         window.addEventListener("load", renderSkills);
+
+        /* BOOTOM */
+        const contactBar = document.getElementById("contactBar");
+
+        window.addEventListener("scroll", () => {
+            const scrollBottom = window.innerHeight + window.scrollY;
+            const pageHeight = document.body.offsetHeight;
+
+            if (scrollBottom >= pageHeight - 10) {
+                contactBar.style.transform = "translateY(0)";
+            } else {
+                contactBar.style.transform = "translateY(100%)";
+            }
+        });
 
 
         /* ANIMATE PROFILE PIC */
@@ -888,7 +909,7 @@
             { name: "Graph", url: "/projectsgraph.html" },
             { name: "Tierlists", url: "/tierlist.html" },
             { name: "Socials", url: "/socials.html" }
-            
+
         ];
 
         const orbit = document.getElementById("orbit");
@@ -930,9 +951,9 @@
                 const blur = (1 - (z + 1) / 2) * 2;
 
                 moon.style.transform = `
-                                                                                                            translate(${cx + x - 45}px, ${cy + y - 20}px)
-                                                                                                            scale(${scale})
-                                                                                                        `;
+                                                                                                                translate(${cx + x - 45}px, ${cy + y - 20}px)
+                                                                                                                scale(${scale})
+                                                                                                            `;
 
                 moon.style.opacity = opacity;
                 moon.style.filter = `blur(${blur}px)`;
