@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Niko</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="icon.png" type="image/png">
 </head>
 
 <body>
@@ -898,6 +899,36 @@
         }
 
         window.addEventListener("load", renderSkills);
+
+        /* FULLSCREEN MOBILE */
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+                window.scrollTo(0, 1);
+            }, 100);
+        });
+        window.addEventListener("load", scaleSections);
+        window.addEventListener("resize", scaleSections);
+        window.addEventListener("orientationchange", scaleSections);
+
+        function scaleSections() {
+            document.querySelectorAll(".section").forEach(section => {
+                const content = section.querySelector(".content");
+                if (!content) return;
+
+                content.style.transform = "scale(1)";
+
+                const sectionRect = section.getBoundingClientRect();
+                const contentRect = content.getBoundingClientRect();
+
+                const scaleX = sectionRect.width / contentRect.width;
+                const scaleY = sectionRect.height / contentRect.height;
+
+                const scale = Math.min(scaleX, scaleY, 1);
+
+                content.style.transform = `scale(${scale})`;
+            });
+        }
+
 
         /* BOOTOM */
         const contactBar = document.getElementById("contactBar");
