@@ -104,7 +104,7 @@
     <div id="menu">
         <select id="tierSelect"></select>
     </div>
-    <div id="nav"></div>
+
 
     <!-- VIEWPORT -->
     <div id="viewport">
@@ -215,7 +215,7 @@
 
         const scrollContainer = document.getElementById("scrollContainer");
         const select = document.getElementById("tierSelect");
-        const nav = document.getElementById("nav");
+
 
         let currentIndex = 0;
         let currentY = 0;
@@ -473,52 +473,7 @@ ${tier.summary.map((line) => {
             targetY = el.offsetTop;
         });
 
-        /* NAV BUILD */
-        function buildNav() {
-            nav.innerHTML = "";
 
-            data.forEach((tier, i) => {
-                const item = document.createElement("div");
-                item.className = "nav-item";
-                item.innerText = tier.title;
-
-                item.onclick = () => {
-                    currentIndex = i;
-                    targetY = document.getElementById(tier.id).offsetTop;
-                };
-
-                nav.appendChild(item);
-            });
-        }
-
-        buildNav();
-
-        /* NAV UPDATE (FIXED) */
-        function updateNav() {
-
-            const center = currentY + window.innerHeight / 2;
-
-            let newIndex = 0;
-
-            for (let i = 0; i < sections.length; i++) {
-                const el = sections[i];
-                const top = el.offsetTop;
-                const bottom = top + el.offsetHeight;
-
-                if (center >= top && center < bottom) {
-                    newIndex = i;
-                    break;
-                }
-            }
-
-            currentIndex = newIndex;
-
-            document.querySelectorAll(".nav-item").forEach((item, i) => {
-                item.classList.toggle("active", i === currentIndex);
-            });
-
-            requestAnimationFrame(updateNav);
-        }
 
         /* DROPDOWN SYNC (OPTIONAL BUT STABLE) */
         function updateDropdown() {
@@ -542,7 +497,6 @@ ${tier.summary.map((line) => {
         /* START */
         build();
         animateScroll();
-        updateNav();
         updateDropdown();
     </script>
 
