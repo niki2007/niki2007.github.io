@@ -82,7 +82,6 @@ body {
     justify-content: center;
 }
 
-/* phone + text stay side by side */
 .rotate-main {
     display: flex;
     align-items: center;
@@ -90,7 +89,6 @@ body {
     gap: 25px;
 }
 
-/* TEXT (animated gradient with smaller waves) */
 .rotate-text {
     font-size: 24px;
     font-weight: 600;
@@ -102,7 +100,6 @@ body {
     transform: translateX(-5px);
 }
 
-/* PHONE */
 .phone-bg {
     font-size: 40px;
     opacity: 0.45;
@@ -110,7 +107,6 @@ body {
     filter: sepia(1);
 }
 
-/* PHONE ANIMATION */
 @keyframes rotatePhone {
     0% {
         transform: rotate(0deg) scale(1);
@@ -179,8 +175,6 @@ body {
     -webkit-text-fill-color: transparent;
     animation: gradientMove 3s linear infinite;
 }
-
-
 
 
 
@@ -613,7 +607,7 @@ img {
 
 /* SECTIONS */
 .section {
-    height: 100vh;
+    height: 100dvh;
     scroll-snap-align: start;
     display: flex;
     align-items: center;
