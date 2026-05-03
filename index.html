@@ -8,9 +8,6 @@
 </head>
 
 <body>
-    <div id="maintenanceScreen">
-        SITE IN BETA - code 1/10done
-    </div>
 
 
 
@@ -38,12 +35,26 @@
 
     <!-- center profile system -->
     <div id="centerProfile" class="hidden">
-
         <img src="Niko.png" id="centerProfileImg">
-
         <div id="orbit"></div>
-
     </div>
+
+    <!-- forced aspect ratio -->
+    <div id="rotateWarning">
+        <div class="rotate-wrapper">
+
+            <div class="rotate-main">
+                <div class="phone-bg">📱</div>
+                <div class="rotate-text">Rotate your device</div>
+            </div>
+            <div class="rotate-subtext">site can overflow</div>
+            <button id="rotateDismiss">DISMISS</button>
+
+
+        </div>
+    </div>
+
+
 
 
 
@@ -386,10 +397,18 @@
             });
         });
 
+        /* DISMISS ROTATE BUTTON */
+        const rotateWarning = document.getElementById("rotateWarning");
+        const dismissBtn = document.getElementById("rotateDismiss");
+
+        dismissBtn.addEventListener("click", () => {
+            rotateWarning.dataset.dismissed = "true";
+            rotateWarning.style.display = "none";
+        });
+
 
 
         /* NAV */
-
         const sections = document.querySelectorAll(".section");
         const nav = document.getElementById("nav");
 
@@ -430,7 +449,23 @@
             setTimeout(() => {
                 isScrolling = false;
             }, 300);
+            setTimeout(checkBottomBar, 400);
         }
+        function checkBottomBar() {
+            const bar = document.getElementById("contactBar");
+
+            const scrollY = window.scrollY;
+            const viewport = window.innerHeight;
+            const fullHeight = document.documentElement.scrollHeight;
+
+            if (scrollY + viewport >= fullHeight - 10) {
+                bar.classList.add("show");
+            } else {
+                bar.classList.remove("show");
+            }
+        }
+
+
 
         /* WHEEL */
         window.addEventListener("wheel", (e) => {
@@ -530,24 +565,6 @@
             }, 10000);
         });
 
-        /* LOADING SCREEN */
-        window.addEventListener("load", () => {
-            const screen = document.getElementById("maintenanceScreen");
-
-            document.body.style.overflow = "hidden";
-
-            screen.style.opacity = "1";
-            screen.style.display = "flex";
-
-            setTimeout(() => {
-                screen.style.opacity = "0";
-
-                setTimeout(() => {
-                    screen.style.display = "none";
-                    document.body.style.overflow = "auto";
-                }, 500);
-            }, 200);
-        });
 
 
 
@@ -802,15 +819,15 @@
                 el.className = "skill fade";
 
                 el.innerHTML = `
-                        <div class="skill-top">
-                            <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
-                            <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
-                        </div>
+                                            <div class="skill-top">
+                                                <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
+                                                <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
+                                            </div>
 
-                        <div class="bar">
-                            <div class="bar-fill" style="background:${color}"></div>
-                        </div>
-                    `;
+                                            <div class="bar">
+                                                <div class="bar-fill" style="background:${color}"></div>
+                                            </div>
+                                        `;
 
                 el.querySelector(".bar-fill").style.width = percent + "%";
 
@@ -866,10 +883,10 @@
             skillDesc.innerText = skill.desc;
 
             skillXP.innerHTML = `
-                        Total XP: ${skill.xp}<br>
-                        Level XP: ${lvl.currentLevelXP} / 100<br>
-                        XP to next level: ${lvl.xpToNext}
-                    `;
+                                            Total XP: ${skill.xp}<br>
+                                            Level XP: ${lvl.currentLevelXP} / 100<br>
+                                            XP to next level: ${lvl.xpToNext}
+                                        `;
 
             skillFill.style.width = lvl.currentLevelXP + "%";
             const percent = lvl.currentLevelXP;
@@ -971,9 +988,9 @@
                 const blur = (1 - (z2 + radius) / (2 * radius)) * 3;
 
                 moon.style.transform = `
-                translate(${cx + x3 - 45}px, ${cy + y3 - 20}px)
-                scale(${scale})
-            `;
+                                    translate(${cx + x3 - 45}px, ${cy + y3 - 20}px)
+                                    scale(${scale})
+                                `;
 
                 moon.style.opacity = opacity;
                 moon.style.filter = `blur(${blur}px)`;
