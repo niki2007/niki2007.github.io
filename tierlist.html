@@ -6,25 +6,25 @@
     <title>Niko - Top Games</title>
 
     <link rel="stylesheet" href="style.css">
-
+    <link rel="icon" href="icon.png" type="image/png">
     <style>
 
-                html, body {
-                    margin: 0;
-                    padding: 0;
-                    overflow: hidden;
-                    background: url('BG1.png') center/cover fixed no-repeat;
-                    font-family: 'Minecraft', sans-serif;
-                    color: white;
-                }
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: url('BG1.png') center/cover fixed no-repeat;
+            font-family: 'Minecraft', sans-serif;
+            color: white;
+        }
 
-                    body::before {
-                        content: "";
-                        position: fixed;
-                        inset: 0;
-                        background: rgba(0,0,0,0.65);
-                        pointer-events: none;
-                    }
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.65);
+                pointer-events: none;
+            }
 
 
         #menu {
@@ -36,65 +36,63 @@
         }
 
 
-                select {
-                    padding: 8px;
-                    border-radius: 8px;
-                    background: rgba(0,0,0,0.7);
-                    color: white;
-                    border: 1px solid rgba(255,255,255,0.2);
-                    font-family: 'Minecraft', sans-serif;
-                }
+        select {
+            padding: 8px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-family: 'Minecraft', sans-serif;
+        }
 
 
-                #viewport {
-                    position: fixed;
-                    inset: 0;
-                    overflow: hidden;
-                }
+        #viewport {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+        }
 
-                #scrollContainer {
-                    position: absolute;
-                    width: 100%;
-                    top: 0;
-                    left: 0;
-                    will-change: transform;
-                }
+        #scrollContainer {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+            will-change: transform;
+        }
 
-                .tier {
-                    min-height: 100vh;
-                    padding: 120px 20px 60px;
-                    box-sizing: border-box;
-                }
+        .tier {
+            min-height: 100vh;
+            padding: 120px 20px 60px;
+            box-sizing: border-box;
+        }
 
-                .container {
-                    width: min(900px, 95vw);
-                    margin: auto;
-                }
+        .container {
+            width: min(900px, 95vw);
+            margin: auto;
+        }
 
-                h1 {
-                    font-size: 40px;
-                    margin: 0 0 10px;
-                }
+        h1 {
+            font-size: 40px;
+            margin: 0 0 10px;
+        }
 
-                h2 {
-                    opacity: 0.7;
-                    margin-top: 0;
-                }
+        h2 {
+            opacity: 0.7;
+            margin-top: 0;
+        }
 
-                .game {
-                    margin: 20px 0;
-                    padding: 15px;
-                    border-radius: 12px;
-                    background: rgba(255,255,255,0.06);
-                }
+        .game {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.06);
+        }
 
         .summary-list li {
             margin-bottom: 14px;
             line-height: 1.3;
             font-size: 13px;
         }
-
-
     </style>
 </head>
 

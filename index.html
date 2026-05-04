@@ -49,6 +49,7 @@
                 <div class="rotate-text">Rotate your device</div>
             </div>
             <div class="rotate-subtext">site can overflow</div>
+            <div class="rotate-subtext">site works the best on computers</div>
             <button id="rotateDismiss">DISMISS</button>
 
 
@@ -92,7 +93,7 @@
        -->
     <!-- !pink!some pink text!    to make text pink lol -->
     <!-- sections -->
-    <section class="section" data-name="Home" style="--bg:url('BG1.png')">
+    <section class="section" data-name="Home" style="--bg:url('BG_1.png')">
         <div class="content">
             <h1 class="fade">Hi, I'm Niko</h1>
             <p class="fade c">Welcome to my personal website. On this site you can learn things about me and find everything i've made. Here are some games i !pink!love! the most for example. !yellow!:D!</p>
@@ -159,7 +160,7 @@
     </section>
 
 
-    <section class="section" data-name="About Me" style="--bg: url('BG1.png')">
+    <section class="section" data-name="About Me" style="--bg: url('BG_2.png')">
         <div class="content">
             <h1 class="fade">About Me</h1>
             <p class="fade c d">I'm !yyyymm:2007-06! years old man. I like to do many things like !red!playing games!, !green!programming!, !aqua!drawing!, !orange!making 3D models!, !lightgreen!going outside!, and many other things. </p>
@@ -167,7 +168,7 @@
     </section>
 
 
-    <section class="section" data-name="Stats" style="--bg: url('BG1.png')">
+    <section class="section" data-name="Stats" style="--bg: url('BG_3.png')">
         <div id="skillOverlay">
             <div id="skillCard">
 
@@ -205,7 +206,7 @@
 
 
 
-    <section class="section" data-name="Projects" style="--bg: url('BG1.png')">
+    <section class="section" data-name="Projects" style="--bg: url('BG_4.png')">
         <div class="content">
             <h1 class="fade">Projects</h1>
             <p class="fade">Here are some of my biggest projects i've made.</p>
@@ -213,7 +214,7 @@
     </section>
 
 
-    <section class="section" data-name="Socials" style="--bg: url('BG1.png')">
+    <section class="section" data-name="Socials" style="--bg: url('BG_5.png')">
         <div class="content">
 
             <h1 class="fade">Social Media</h1>
@@ -331,7 +332,7 @@
         </div>
     </section>
 
-    <section class="section" data-name="Top Games" style="--bg: url('BG1.png')">
+    <section class="section" data-name="Top Games" style="--bg: url('BG_6.png')">
         <div class="content">
             <h1 class="fade">Top Rated Games</h1>
             <p class="fade">You can learn about my favourite games. Here are some examples.</p>
@@ -810,7 +811,7 @@
             const end = start + skillsPerPage;
             const pageSkills = skillData.slice(start, end);
 
-            pageSkills.forEach(skill => {
+            pageSkills.forEach((skill, i) => {
 
                 const lvl = getLevelData(skill.xp);
                 const percent = lvl.currentLevelXP;
@@ -818,17 +819,18 @@
 
                 const el = document.createElement("div");
                 el.className = "skill fade";
+                el.style.setProperty("--i", i);
 
                 el.innerHTML = `
-                                            <div class="skill-top">
-                                                <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
-                                                <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
-                                            </div>
+            <div class="skill-top">
+                <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
+                <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
+            </div>
 
-                                            <div class="bar">
-                                                <div class="bar-fill" style="background:${color}"></div>
-                                            </div>
-                                        `;
+            <div class="bar">
+                <div class="bar-fill" style="background:${color}"></div>
+            </div>
+        `;
 
                 el.querySelector(".bar-fill").style.width = percent + "%";
 
@@ -840,11 +842,27 @@
             });
 
             updatePagination();
+            applySkillFadeDelays();
         }
+
         skillOverlay.addEventListener("click", () => {
             skillOverlay.classList.remove("show");
         });
+        function applySkillFadeDelays() {
+            const skills = document.querySelectorAll("#skillsContent .fade");
 
+            const columns = 2;
+            skills.forEach((el, i) => {
+                const row = Math.floor(i / columns);
+                const col = i % columns;
+
+                const delay = (row * 200) + (col * 800);
+
+                el.style.transitionDelay = delay + "ms";
+            });
+        }
+
+        /* PAGES */
         const prevBtn = document.getElementById("prevPage");
         const nextBtn = document.getElementById("nextPage");
         const pageInfo = document.getElementById("pageInfo");

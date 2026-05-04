@@ -104,7 +104,7 @@ body {
     font-size: 40px;
     opacity: 0.45;
     animation: rotatePhone 2.5s ease-in-out infinite;
-    filter: sepia(1);
+    filter: saturate(0.5) hue-rotate(120deg);
 }
 
 @keyframes rotatePhone {
@@ -614,20 +614,13 @@ img {
     justify-content: center;
     position: relative;
     overflow: hidden;
+    background-image: var(--bg);
+    background-repeat: repeat-x; 
+    background-position: center;
+    background-size: auto 100vh;
+    image-rendering: pixelated;
 }
 
-
-    .section::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: var(--bg);
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        transform: scale(1.05);
-        z-index: -2;
-    }
 
 
 /* CONTENT */
