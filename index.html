@@ -10,8 +10,16 @@
 
 <body class="loading">
     <div id="loadingScreen">
-        <div class="loaderText">Loading Niko Site...</div>
+        <div class="mc-loader">
+            <div class="mc-title">Generating world</div>
+            <div class="mc-sub">Building terrain</div>
+
+            <div class="mc-bar">
+                <div class="mc-bar-fill"></div>
+            </div>
+        </div>
     </div>
+
 
 
 
@@ -826,15 +834,15 @@
                 el.style.setProperty("--i", i);
 
                 el.innerHTML = `
-                        <div class="skill-top">
-                            <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
-                            <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
-                        </div>
+                            <div class="skill-top">
+                                <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
+                                <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
+                            </div>
 
-                        <div class="bar">
-                            <div class="bar-fill" style="background:${color}"></div>
-                        </div>
-                    `;
+                            <div class="bar">
+                                <div class="bar-fill" style="background:${color}"></div>
+                            </div>
+                        `;
 
                 el.querySelector(".bar-fill").style.width = percent + "%";
 
@@ -906,10 +914,10 @@
             skillDesc.innerText = skill.desc;
 
             skillXP.innerHTML = `
-                                                        Total XP: ${skill.xp}<br>
-                                                        Level XP: ${lvl.currentLevelXP} / 100<br>
-                                                        XP to next level: ${lvl.xpToNext}
-                                                    `;
+                                                            Total XP: ${skill.xp}<br>
+                                                            Level XP: ${lvl.currentLevelXP} / 100<br>
+                                                            XP to next level: ${lvl.xpToNext}
+                                                        `;
 
             skillFill.style.width = lvl.currentLevelXP + "%";
             const percent = lvl.currentLevelXP;
@@ -1041,9 +1049,9 @@
                 const blur = (1 - (z2 + radius) / (2 * radius)) * 3;
 
                 moon.style.transform = `
-                                                translate(${cx + x3 - 45}px, ${cy + y3 - 20}px)
-                                                scale(${scale})
-                                            `;
+                                                    translate(${cx + x3 - 45}px, ${cy + y3 - 20}px)
+                                                    scale(${scale})
+                                                `;
 
                 moon.style.opacity = opacity;
                 moon.style.filter = `blur(${blur}px)`;
@@ -1081,26 +1089,48 @@
 
         animateLight();
 
+
         /* LOADING SITE */
+        const bar = document.querySelector(".mc-bar-fill");
+
+        let progress = 0;
+
+        const fakeLoader = setInterval(() => {
+            progress += Math.random() * 6;
+
+            if (progress > 90) progress = 90;
+
+            bar.style.width = progress + "%";
+        }, 100);
+
+
         window.addEventListener("load", () => {
 
             parseCustomColors();
             parseDates();
 
-            // show content
-            document.body.classList.remove("loading");
+            clearInterval(fakeLoader);
 
-            // hide loader
-            const loader = document.getElementById("loadingScreen");
-            loader.classList.add("hide");
+            const finish = setInterval(() => {
+                progress += 2;
 
-            setTimeout(() => {
-                loader.remove();
-            }, 600);
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(finish);
+
+                    document.body.classList.remove("loading");
+
+                    const loader = document.getElementById("loadingScreen");
+                    loader.classList.add("hide");
+
+                    setTimeout(() => {
+                        loader.remove();
+                    }, 400);
+                }
+
+                bar.style.width = progress + "%";
+            }, 16);
         });
-
-
-
 
     </script>
 

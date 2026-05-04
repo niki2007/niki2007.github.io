@@ -30,25 +30,53 @@ body {
     position: fixed;
     inset: 0;
     display: flex;
-    background: black;
     align-items: center;
     justify-content: center;
     z-index: 999999;
+    background: url("dirt.png");
+    background-size: 104px;
+    image-rendering: pixelated;
     color: white;
-    font-family: sans-serif;
-    font-size: 20px;
+}
+
+.mc-loader {
+    text-align: center;
+}
+
+.mc-title {
+    font-size: 28px;
+    margin-bottom: 16px;
+}
+
+.mc-sub {
+    font-size: 24px;
+    margin-bottom: 14px;
+}
+
+.mc-bar {
+    width: 320px;
+    height: 10px;
+    background: #2a2a2a;
+    border: 2px solid #111;
+    overflow: hidden;
+}
+
+.mc-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: rgb(124, 255, 122);
     image-rendering: pixelated;
 }
 
-    #loadingScreen.hide {
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.1s ease;
-    }
+#loadingScreen.hide {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.75s ease;
+}
+
 body.loading > *:not(#loadingScreen) {
     visibility: hidden;
 }
-
 
 
 
