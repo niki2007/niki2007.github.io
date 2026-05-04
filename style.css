@@ -45,14 +45,9 @@ body {
         pointer-events: none;
         transition: opacity 0.1s ease;
     }
-body {
+body.loading > *:not(#loadingScreen) {
     visibility: hidden;
 }
-
-    body.loaded {
-        visibility: visible;
-    }
-
 
 
 
