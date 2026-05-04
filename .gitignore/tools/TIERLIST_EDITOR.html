@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game List Editor</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f0f0f;
+            color: #ffffff;
+        }
+
+        .container {
+            padding: 16px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        button {
+            background: #1f6feb;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            margin: 4px;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+            button.green {
+                background: #238636;
+            }
+
+            button.purple {
+                background: #8957e5;
+            }
+
+        textarea, input {
+            width: 99%;
+            background: #1a1a1a;
+            color: white;
+            border: 1px solid #333;
+            padding: 6px;
+            margin: 4px 0;
+            border-radius: 4px;
+        }
+
+        .section {
+            border: 1px solid #333;
+            padding: 10px;
+            margin-top: 12px;
+            border-radius: 8px;
+
+        }
+
+        .game {
+            border: 1px solid #444;
+            padding: 8px;
+            margin-top: 8px;
+            border-radius: 6px;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Game List Editor</h1>
+
+        <button class="green" onclick="addSection()">Add Section</button>
+        <button onclick="copyOutput()">Copy Output</button>
+
+        <textarea id="importBox" placeholder="Paste JSON here to load..."></textarea>
+        <button class="purple" onclick="loadData()">Load</button>
+
+        <div id="app"></div>
+    </div>
+
+    <script>
+let sections = [];
+
+function render() {
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+
+  sections.forEach((sec, i) => {
+      const div = document.createElement("div");
+      div.className = "section";
+      div.style.background = randomColor();
+
+    div.innerHTML = `
+      <input placeholder="id" value="${sec.id}" oninput="sections[${i}].id=this.value" />
+      <input placeholder="title" value="${sec.title}" oninput="sections[${i}].title=this.value" />
+      <input placeholder="subtitle" value="${sec.subtitle}" oninput="sections[${i}].subtitle=this.value" />
+
+      <h4>Summary</h4>
+      ${sec.summary.map((s, si) =>
+        `<input value="${s}" oninput="sections[${i}].summary[${si}]=this.value" />`
+      ).join('')}
+      <button onclick="addSummary(${i})">+ Summary</button>
+
+      <h4>Games</h4>
+      ${sec.games.map((g, gi) => `
+        <div class='game'>
+          <input placeholder='rank' value='${g.rank}' oninput='sections[${i}].games[${gi}].rank=this.value' />
+          <input placeholder='name' value='${g.name}' oninput='sections[${i}].games[${gi}].name=this.value' />
+          <input placeholder='desc' value='${g.desc}' oninput='sections[${i}].games[${gi}].desc=this.value' />
+          <input placeholder='images (auto array)' value='${g.images.join(",")}'
+            oninput='sections[${i}].games[${gi}].images=this.value.split(",")' />
+        </div>
+      `).join('')}
+
+      <button onclick="addGame(${i})">+ Game</button>
+    `;
+
+    app.appendChild(div);
+  });
+}
+        function randomColor() {
+            const hue = Math.floor(Math.random() * 360);
+            return `hsl(${hue}, 60%, 20%)`;
+        }
+
+function addSection() {
+  sections.push({
+    id: "",
+    title: "",
+    subtitle: "",
+    summary: [""],
+    games: [{ rank: 1, name: "", desc: "", images: [] }]
+  });
+  render();
+}
+
+function addSummary(i) {
+  sections[i].summary.push("");
+  render();
+}
+
+function addGame(i) {
+  sections[i].games.push({ rank: 1, name: "", desc: "", images: [] });
+  render();
+}
+
+function copyOutput() {
+  navigator.clipboard.writeText(JSON.stringify(sections, null, 2));
+  alert("Copied!");
+}
+
+function loadData() {
+  try {
+    sections = JSON.parse(document.getElementById("importBox").value);
+    render();
+  } catch (e) {
+    alert("Invalid JSON");
+  }
+}
+
+render();
+    </script>
+
+</body>
+</html>
