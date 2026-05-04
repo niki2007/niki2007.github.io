@@ -13,10 +13,10 @@
         <div class="mc-loader">
             <div class="mc-title">Generating world</div>
             <div class="mc-sub">Building terrain</div>
-
             <div class="mc-bar">
                 <div class="mc-bar-fill"></div>
             </div>
+            <div class="mc-subload">( loading webside )</div>
         </div>
     </div>
 
@@ -52,7 +52,7 @@
         <div id="orbit"></div>
     </div>
 
-    <!-- forced aspect ratio -->
+    <!-- forced aspect ratio
     <div id="rotateWarning">
         <div class="rotate-wrapper">
 
@@ -67,7 +67,7 @@
 
         </div>
     </div>
-
+    -->
 
 
 
@@ -411,7 +411,7 @@
             });
         });
 
-        /* DISMISS ROTATE BUTTON */
+        /* DISMISS ROTATE BUTTON 
         const rotateWarning = document.getElementById("rotateWarning");
         const dismissBtn = document.getElementById("rotateDismiss");
 
@@ -419,7 +419,7 @@
             rotateWarning.dataset.dismissed = "true";
             rotateWarning.style.display = "none";
         });
-
+        */
 
 
         /* NAV */
@@ -834,15 +834,15 @@
                 el.style.setProperty("--i", i);
 
                 el.innerHTML = `
-                            <div class="skill-top">
-                                <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
-                                <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
-                            </div>
+                                <div class="skill-top">
+                                    <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
+                                    <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
+                                </div>
 
-                            <div class="bar">
-                                <div class="bar-fill" style="background:${color}"></div>
-                            </div>
-                        `;
+                                <div class="bar">
+                                    <div class="bar-fill" style="background:${color}"></div>
+                                </div>
+                            `;
 
                 el.querySelector(".bar-fill").style.width = percent + "%";
 
@@ -914,10 +914,10 @@
             skillDesc.innerText = skill.desc;
 
             skillXP.innerHTML = `
-                                                            Total XP: ${skill.xp}<br>
-                                                            Level XP: ${lvl.currentLevelXP} / 100<br>
-                                                            XP to next level: ${lvl.xpToNext}
-                                                        `;
+                                                                Total XP: ${skill.xp}<br>
+                                                                Level XP: ${lvl.currentLevelXP} / 100<br>
+                                                                XP to next level: ${lvl.xpToNext}
+                                                            `;
 
             skillFill.style.width = lvl.currentLevelXP + "%";
             const percent = lvl.currentLevelXP;
@@ -1049,9 +1049,9 @@
                 const blur = (1 - (z2 + radius) / (2 * radius)) * 3;
 
                 moon.style.transform = `
-                                                    translate(${cx + x3 - 45}px, ${cy + y3 - 20}px)
-                                                    scale(${scale})
-                                                `;
+                                                        translate(${cx + x3 - 45}px, ${cy + y3 - 20}px)
+                                                        scale(${scale})
+                                                    `;
 
                 moon.style.opacity = opacity;
                 moon.style.filter = `blur(${blur}px)`;

@@ -45,14 +45,18 @@ body {
 
 .mc-title {
     font-size: 28px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 .mc-sub {
     font-size: 24px;
     margin-bottom: 14px;
 }
-
+.mc-subload {
+    font-size: 14px;
+    margin-top: 30px;
+    opacity: 0.2;
+}
 .mc-bar {
     width: 320px;
     height: 10px;
