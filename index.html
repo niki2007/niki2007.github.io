@@ -16,7 +16,8 @@
             <div class="mc-bar">
                 <div class="mc-bar-fill"></div>
             </div>
-            <div class="mc-subload">( loading webside )</div>
+            <div class="mc-subload">( loading colored text )</div>
+            <div class="mc-subsubload">( inspired by Minecraft's loading screen )</div>
         </div>
     </div>
 
@@ -82,10 +83,6 @@
 
 
     <!--
-
-
-
-
                 <div class="social-tile fade"
                      data-name="nikilogout"
                      data-avatar="CARD.png"
@@ -98,14 +95,10 @@
                     <img>
                     <span>Youtube</span>
                 </div>
-
-
-
-
        -->
     <!-- !pink!some pink text!    to make text pink lol -->
     <!-- sections -->
-    <section class="section" data-name="Home" style="--bg:url('BG_1.png')">
+    <section class="section" data-name="Home" data-bg="BG_1" data-speed="300">
         <div class="content">
             <h1 class="fade">Hi, I'm Niko</h1>
             <p class="fade c">Welcome to my personal website. On this site you can learn things about me and find everything i've made. Here are some games i !pink!love! the most for example. !yellow!:D!</p>
@@ -987,6 +980,99 @@
         }
 
         setInterval(pulseProfile, 15000);
+
+        /* ANIMATED BG */
+        function initBackgroundAnimation() {
+
+            const observers = new Map();
+
+            document.querySelectorAll(".section").forEach(section => {
+
+                const base = section.dataset.bg;
+                if (!base) return;
+
+                const speed = parseInt(section.dataset.speed || "500");
+
+                let frames = [];
+                let index = 0;
+                let running = false;
+                let timeoutId = null;
+
+                function setBg(url) {
+                    section.style.setProperty("--bg", `url('${url}')`);
+                }
+
+                function preloadFrames(testIndex = 1) {
+                    const url = `${base}_${testIndex}.png`;
+
+                    const img = new Image();
+
+                    img.onload = () => {
+                        frames.push(url);
+                        preloadFrames(testIndex + 1);
+                    };
+
+                    img.onerror = () => {
+                        startLoop();
+                    };
+
+                    img.src = url;
+                }
+
+                function startLoop() {
+                    if (frames.length === 0 || running) return;
+
+                    running = true;
+
+                    function next() {
+                        if (!running) return;
+
+                        setBg(frames[index]);
+
+                        index++;
+
+                        if (index >= frames.length) {
+                            setBg(frames[frames.length - 1]);
+
+                            index = 0;
+
+                            timeoutId = setTimeout(next, speed);
+                            return;
+                        }
+
+                        timeoutId = setTimeout(next, speed);
+                    }
+
+                    next();
+                }
+
+                function stopLoop() {
+                    running = false;
+                    if (timeoutId) clearTimeout(timeoutId);
+                }
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+
+                        if (entry.isIntersecting) {
+                            if (frames.length === 0) preloadFrames();
+                            else startLoop();
+                        } else {
+                            stopLoop();
+                        }
+
+                    });
+                }, {
+                    threshold: 0.2
+                });
+
+                observer.observe(section);
+                observers.set(section, observer);
+            });
+        }
+
+        window.addEventListener("load", initBackgroundAnimation);
+
 
         /* ORBIT */
         const links = [

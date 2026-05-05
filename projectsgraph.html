@@ -53,7 +53,10 @@
         }
         window.addEventListener('resize', resize);
         resize();
-
+        const baseWidth = 700; 
+        function getScale() {
+            return Math.min(canvas.width, canvas.height) / baseWidth;
+        }
 
 
 
@@ -113,16 +116,15 @@
                 if (index === -1) return;
                 obj[part.slice(0, index).trim()] = part.slice(index + 1).trim();
             });
-
+            const spread = 500 * getScale();
             return {
                 id: obj.name,
                 color: obj.color || '#7aa2ff',
                 site: obj.site || null,
                 links: obj.linked ? obj.linked.split('-') : [],
-                size: obj.size ? Number(obj.size) : 8,
-
-                x: canvas.width / 2 + (Math.random() - 0.5) * 600,
-                y: canvas.height / 2 + (Math.random() - 0.5) * 600,
+                size: (obj.size ? Number(obj.size) : 8) * getScale(),
+                x: canvas.width / 2 + (Math.random() - 0.5) * spread,
+                y: canvas.height / 2 + (Math.random() - 0.5) * spread,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2
             };
@@ -420,7 +422,7 @@
                 ctx.shadowBlur = 0;
 
                 ctx.fillStyle = '#fff';
-                ctx.font = '12px Minecraft';
+                ctx.font = `${12 * getScale()}px Minecraft`;
                 ctx.fillText(n.id, n.x + n.size + 6, n.y + 4);
             });
 
