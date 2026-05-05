@@ -69,19 +69,9 @@
         </div>
     </div>
     -->
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <!--
+        <section class="section" data-name="Home" data-bg="BG_1" data-speed="300">
+     -->
     <!--
                 <div class="social-tile fade"
                      data-name="nikilogout"
@@ -97,8 +87,11 @@
                 </div>
        -->
     <!-- !pink!some pink text!    to make text pink lol -->
+
+
+
     <!-- sections -->
-    <section class="section" data-name="Home" data-bg="BG_1" data-speed="300">
+    <section class="section" data-name="Home" style="--bg: url('BG_1.png')">
         <div class="content">
             <h1 class="fade">Hi, I'm Niko</h1>
             <p class="fade c">Welcome to my personal website. On this site you can learn things about me and find everything i've made. Here are some games i !pink!love! the most for example. !yellow!:D!</p>
@@ -442,7 +435,7 @@
             });
         });
 
-        /* DISMISS ROTATE BUTTON 
+        /* DISMISS ROTATE BUTTON
         const rotateWarning = document.getElementById("rotateWarning");
         const dismissBtn = document.getElementById("rotateDismiss");
 
@@ -865,15 +858,15 @@
                 el.style.setProperty("--i", i);
 
                 el.innerHTML = `
-                                <div class="skill-top">
-                                    <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
-                                    <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
-                                </div>
+                                        <div class="skill-top">
+                                            <span class="skill-name">${skill.name} (Lvl ${lvl.level})</span>
+                                            <span class="skill-meta">${lvl.currentLevelXP}/100 XP</span>
+                                        </div>
 
-                                <div class="bar">
-                                    <div class="bar-fill" style="background:${color}"></div>
-                                </div>
-                            `;
+                                        <div class="bar">
+                                            <div class="bar-fill" style="background:${color}"></div>
+                                        </div>
+                                    `;
 
                 el.querySelector(".bar-fill").style.width = percent + "%";
 
@@ -945,10 +938,10 @@
             skillDesc.innerText = skill.desc;
 
             skillXP.innerHTML = `
-                                                                Total XP: ${skill.xp}<br>
-                                                                Level XP: ${lvl.currentLevelXP} / 100<br>
-                                                                XP to next level: ${lvl.xpToNext}
-                                                            `;
+                                                                        Total XP: ${skill.xp}<br>
+                                                                        Level XP: ${lvl.currentLevelXP} / 100<br>
+                                                                        XP to next level: ${lvl.xpToNext}
+                                                                    `;
 
             skillFill.style.width = lvl.currentLevelXP + "%";
             const percent = lvl.currentLevelXP;
@@ -1173,9 +1166,9 @@
                 const blur = (1 - (z2 + radius) / (2 * radius)) * 3;
 
                 moon.style.transform = `
-                                                        translate(${cx + x3 - 45}px, ${cy + y3 - 20}px)
-                                                        scale(${scale})
-                                                    `;
+                                                                translate(${cx + x3 - 45}px, ${cy + y3 - 20}px)
+                                                                scale(${scale})
+                                                            `;
 
                 moon.style.opacity = opacity;
                 moon.style.filter = `blur(${blur}px)`;
