@@ -371,6 +371,44 @@
 
 
     <script>
+        /* PRELOAD BGS */
+        function preloadAllBGFrames() {
+            const sections = document.querySelectorAll(".section");
+
+            const promises = [];
+
+            sections.forEach(section => {
+                const base = section.dataset.bg;
+                if (!base) return;
+
+                let i = 1;
+
+                promises.push(new Promise(resolve => {
+
+                    function load() {
+                        const img = new Image();
+                        const url = `${base}_${i}.png`;
+
+                        img.onload = () => {
+                            i++;
+                            load();
+                        };
+
+                        img.onerror = () => {
+                            resolve();
+                        };
+
+                        img.src = url;
+                    }
+
+                    load();
+                }));
+            });
+
+            return Promise.all(promises);
+        }
+
+
         /* FADE */
         const elements = document.querySelectorAll(".fade");
 
