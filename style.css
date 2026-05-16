@@ -262,11 +262,6 @@ body.loading > *:not(#loadingScreen) {
 
 
 
-
-
-
-
-
 /* GRID SECTIONS */
 /* MAIN */
 .projects-grid {
@@ -336,9 +331,6 @@ body.loading > *:not(#loadingScreen) {
         transform: translateY(-8px) scale(1.03);
         box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
     }
-
-
-
 
 
 
@@ -514,13 +506,6 @@ body.loading > *:not(#loadingScreen) {
         font-size: 14px;
         opacity: 0.7;
     }
-
-
-
-
-
-
-
 
 
 
@@ -839,10 +824,6 @@ p {
 
 
 
-
-
-
-
 * {
     user-select: none;
 
@@ -931,6 +912,9 @@ html, body {
     color: white;
     cursor: pointer;
 }
+
+
+
 
 
 
@@ -1125,3 +1109,19 @@ html, body {
 
 
 
+
+
+
+
+
+
+
+/* LINKS SITE */
+.linkttxt {
+    color: cornflowerblue;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 90px;
+    pointer-events: auto;
+    cursor: pointer;
+}
