@@ -1,0 +1,48 @@
+name: Discord Notifications
+
+on:
+  push:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Discord message
+        run: |
+          FULL_MSG="${{ github.event.head_commit.message }}"
+          AUTHOR="${{ github.actor }}"
+          BRANCH="${{ github.ref_name }}"
+          URL="${{ github.event.head_commit.url }}"
+
+          # Split message into title and body
+          TITLE=$(echo "$FULL_MSG" | head -n1)
+          BODY=$(echo "$FULL_MSG" | tail -n +2 | sed '/./,$!d')
+
+          # Add emoji based on title
+          if [[ "$TITLE" == Update* ]]; then
+            TITLE="🔧 $TITLE"
+          elif [[ "$TITLE" == Create* ]]; then
+            TITLE="🖊 $TITLE"
+          elif [[ "$TITLE" == Rename* ]]; then
+            TITLE="✏️ $TITLE"
+          elif [[ "$TITLE" == Delete* ]] || [[ "$TITLE" == Remove* ]]; then
+            TITLE="❌ $TITLE"
+          else
+            TITLE="📦 $TITLE"
+          fi
+          
+          MSG="**💖 Github site 📍**"$'\n'
+          MSG+="$TITLE"$'\n'
+          MSG+="Author: $AUTHOR"$'\n'
+
+          if [ -n "$BODY" ]; then
+            MSG+="Extended Description: \"$BODY\""$'\n'
+          fi
+
+          MSG+="Branch: $BRANCH"$'\n'
+          MSG+="🔗 $URL"$'\n'
+          MSG+="🌐 https://niki2007.github.io/"
+
+          PAYLOAD=$(jq -Rn --arg content "$MSG" '{content: $content}')
+          curl -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.DISCORD_WEBHOOK }}

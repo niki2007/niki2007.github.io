@@ -801,6 +801,10 @@ p {
     text-align: right;
     background: fixed;
     background-color: rgb(0, 0, 0, 0.21);
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
 }
 
     /* hover effect */
@@ -810,6 +814,15 @@ p {
         border-right: 2px solid white;
         background-color: rgb(0, 0, 0, 1);
     }
+body.scrolling .nav-item:hover {
+    opacity: 0.3;
+    padding: 6px 10px;
+    border-right: 2px solid rgba(255,255,255,0.2);
+    text-align: right;
+    background: fixed;
+    background-color: rgb(0, 0, 0, 0.21);
+    transition: all 0.3s ease;
+}
 
     /* active section highlight */
     .nav-item.active {

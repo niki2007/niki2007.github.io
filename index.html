@@ -475,6 +475,7 @@
             if (isScrolling) return;
 
             isScrolling = true;
+            document.body.classList.add("scrolling");
             currentSection = index;
 
             window.scrollTo({
@@ -482,12 +483,13 @@
                 behavior: "smooth"
             });
 
-            setActive(index);
+            document.querySelectorAll(".nav-item")
+                .forEach(n => n.classList.remove("active"));
 
             setTimeout(() => {
                 isScrolling = false;
-            }, 300);
-            setTimeout(checkBottomBar, 400);
+                document.body.classList.remove("scrolling");
+            }, 1300);
         }
         function checkBottomBar() {
             const bar = document.getElementById("contactBar");
