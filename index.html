@@ -1134,15 +1134,19 @@
         buildOrbit();
 
         let angleOffset = 0;
+        let lastTime = performance.now();
+        const orbitSpeed = 0.6; // tweak speed here (0.2 slow, 1 fast)
 
         let rotX = 1.3;
         let rotY = -0.45;
         let rotZ = 0.0;
 
-        function animateOrbit() {
+        function animateOrbit(time) {
             const moons = document.querySelectorAll(".moon");
 
             const radius = 140;
+            const deltaTime = (time - lastTime) / 1000;
+            lastTime = time;
             const cx = 200;
             const cy = 200;
 
@@ -1177,12 +1181,12 @@
                 moon.style.zIndex = Math.floor(scale * 100);
             });
 
-            angleOffset += 0.012;
+            angleOffset += orbitSpeed * deltaTime;
 
             requestAnimationFrame(animateOrbit);
         }
 
-        animateOrbit();
+        requestAnimationFrame(animateOrbit);
 
 
         /* CURSOR */
